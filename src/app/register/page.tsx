@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 interface RegisterProps {}
 
 const Register: React.FC<RegisterProps> = () => {
+  const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -21,6 +22,7 @@ const Register: React.FC<RegisterProps> = () => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [role, setRole] = useState<string>('');
   const [error, setError] = useState<string>('');
+  const [phoneno, setPhoneno] = useState<string>('');
   const router = useRouter();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,13 +59,15 @@ const Register: React.FC<RegisterProps> = () => {
         }
 
         await updateProfile(user, {
-          displayName: domain,
+          displayName: name,
           photoURL: imageUrl
         });
 
         // Save additional user details along with the selected role
         await setDoc(doc(db, "users", user.uid), {
+          name,
           email,
+          phoneno,
           domain,
           expertise,
           imageUrl,
@@ -122,6 +126,19 @@ const Register: React.FC<RegisterProps> = () => {
             <option value="other">Other</option>
           </select>
         </div>
+        {/* Name Field */}
+        <div className="mb-4">
+          <label htmlFor="name" className="block text-white text-sm font-bold mb-2">Name</label>
+          <input
+            type="text"
+            id="name"
+            placeholder='Your name'
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required
+          />
+        </div>
         {/* Email Field */}
         <div className="mb-4">
           <label htmlFor="email" className="block text-white text-sm font-bold mb-2">Email</label>
@@ -131,6 +148,19 @@ const Register: React.FC<RegisterProps> = () => {
             placeholder='Your email address'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required
+          />
+        </div>
+        {/* Phoneno Field */}
+        <div className="mb-4">
+          <label htmlFor="phoneno" className="block text-white text-sm font-bold mb-2">Phone Number</label>
+          <input
+            type="text"
+            id="phoneno"
+            placeholder='Your phone number'
+            value={phoneno}
+            onChange={(e) => setPhoneno(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           />

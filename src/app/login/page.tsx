@@ -34,7 +34,7 @@ const Login: React.FC<LoginProps> = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center ">
+    <div className="min-h-screen flex flex-col justify-center items-center mt-8">
       <form onSubmit={handleLogin}>
         <div className="flex flex-col items-center justify-center align-middle">
       <Image src={logo} alt="Innovate Hub Logo" width={150} height={171} />
