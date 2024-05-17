@@ -1,6 +1,5 @@
-'use client'
+"use client"
 
-// pages/register.tsx
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
@@ -9,9 +8,11 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { auth, db, storage } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 
-interface RegisterProps {}
+const validSecretKeys = [
+  'IC24APLM', 'IC24QWHY', 'IC24YUJI', 'IC24BNHY', 'IC24VGYU', 'IC24XSWZ' 
+];
 
-const Register: React.FC<RegisterProps> = () => {
+const Register: React.FC = () => {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -21,8 +22,8 @@ const Register: React.FC<RegisterProps> = () => {
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [role, setRole] = useState<string>('');
+  const [secretKey, setSecretKey] = useState<string>('');
   const [error, setError] = useState<string>('');
-  const [phoneno, setPhoneno] = useState<string>('');
   const router = useRouter();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,6 +44,10 @@ const Register: React.FC<RegisterProps> = () => {
     event.preventDefault();
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
+      return;
+    }
+    if (role !== 'student' && !validSecretKeys.includes(secretKey)) {
+      setError("Invalid secret key.");
       return;
     }
     setError(''); // Clear previous errors
@@ -67,7 +72,6 @@ const Register: React.FC<RegisterProps> = () => {
         await setDoc(doc(db, "users", user.uid), {
           name,
           email,
-          phoneno,
           domain,
           expertise,
           imageUrl,
@@ -86,7 +90,7 @@ const Register: React.FC<RegisterProps> = () => {
     <div className="min-h-screen flex flex-col justify-center items-center">
       <form onSubmit={handleRegister} className="p-8 rounded-lg">
         <h1 className="text-white text-2xl font-semibold mb-6">Register for Innovate Hub</h1>
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+        {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
         {/* Profile Image Field */}
         <div className="mb-4 items-center justify-center align-middle">
           <label htmlFor="profileImage" className="text-center block text-white text-sm font-bold mb-3">Profile Picture</label>
@@ -126,6 +130,21 @@ const Register: React.FC<RegisterProps> = () => {
             <option value="other">Other</option>
           </select>
         </div>
+        {/* Secret Key Field for Non-Students */}
+        {role !== 'student' && (
+          <div className="mb-4">
+            <label htmlFor="secretKey" className="block text-white text-sm font-bold mb-2">Enter Secret Key</label>
+            <input
+              type="text"
+              id="secretKey"
+              placeholder="Enter secret key"
+              value={secretKey}
+              onChange={(e) => setSecretKey(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
+          </div>
+        )}
         {/* Name Field */}
         <div className="mb-4">
           <label htmlFor="name" className="block text-white text-sm font-bold mb-2">Name</label>
@@ -148,19 +167,6 @@ const Register: React.FC<RegisterProps> = () => {
             placeholder='Your email address'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            required
-          />
-        </div>
-        {/* Phoneno Field */}
-        <div className="mb-4">
-          <label htmlFor="phoneno" className="block text-white text-sm font-bold mb-2">Phone Number</label>
-          <input
-            type="text"
-            id="phoneno"
-            placeholder='Your phone number'
-            value={phoneno}
-            onChange={(e) => setPhoneno(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
@@ -226,7 +232,7 @@ const Register: React.FC<RegisterProps> = () => {
         {/* Login Link */}
         <p className="text-white mt-4">
           Already have an account?{' '}
-          <Link href="/login"  className="text-orange-500 hover:text-orange-600">Login
+          <Link href="/login" className="text-orange-500 hover:text-orange-600">Login
           </Link>
         </p>
         </div>
