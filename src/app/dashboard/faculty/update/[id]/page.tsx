@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { doc, addDoc, collection, getDoc } from 'firebase/firestore';
+import { useForm, Controller } from 'react-hook-form';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Image from 'next/image';
@@ -17,31 +17,40 @@ interface FormData {
   hashtags: string[];
 }
 
-const FacultyDashboard: React.FC = () => {
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<FormData>();
+const UpdateProblemStatement: React.FC = () => {
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>();
   const router = useRouter();
-  const [userRole, setUserRole] = useState<string>('');
+  const params = useParams();
+  const { id } = params;
   const [problemCharCount, setProblemCharCount] = useState(0);
   const [outcomeCharCount, setOutcomeCharCount] = useState(0);
   const [selectedSdgGoals, setSelectedSdgGoals] = useState<string[]>([]);
   const [hashtags, setHashtags] = useState<string[]>([]);
+  const [problemData, setProblemData] = useState<FormData | null>(null);
 
   useEffect(() => {
-    if (auth.currentUser) {
-      const fetchUserRole = async () => {
-        const userId = auth.currentUser?.uid || ''; // Add a fallback value for undefined case
-        const userDocRef = doc(db, "users", userId);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          setUserRole(userDoc.data().role);
-          if (userDoc.data().role === 'student') {
-            router.push('/dashboard/student');
-          }
+    if (auth.currentUser && id) {
+      const fetchProblemData = async () => {
+        const docRef = doc(db, "problemStatements", id as string);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data() as FormData;
+          setProblemData(data);
+          setValue('problemStatement', data.problemStatement);
+          setValue('expectedOutcome', data.expectedOutcome);
+          setValue('sdgGoals', data.sdgGoals);
+          setValue('hashtags', data.hashtags);
+          setProblemCharCount(data.problemStatement.length);
+          setOutcomeCharCount(data.expectedOutcome.length);
+          setSelectedSdgGoals(data.sdgGoals);
+          setHashtags(data.hashtags);
+        } else {
+          console.log("No such document!");
         }
       };
-      fetchUserRole();
+      fetchProblemData();
     }
-  }, [router]);
+  }, [id, setValue]);
 
   const handleAddHashtag = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if ((event.key === 'Enter' || event.key === ',') && hashtags.length < 5) {
@@ -74,19 +83,17 @@ const FacultyDashboard: React.FC = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await addDoc(collection(db, "problemStatements"), {
+      const docRef = doc(db, "problemStatements", id as string);
+      await updateDoc(docRef, {
         problemStatement: data.problemStatement,
         expectedOutcome: data.expectedOutcome,
         sdgGoals: data.sdgGoals,
         hashtags: data.hashtags,
-        createdBy: auth.currentUser?.uid,
-        createdAt: new Date(),
-        userName: auth.currentUser?.displayName,
-        userRole: userRole
       });
-      toast.success("Problem statement submitted successfully!");
+      toast.success("Problem statement updated successfully!");
+      router.push('/dashboard/faculty');
     } catch (error) {
-      toast.error("Failed to submit problem statement: " + error);
+      toast.error("Failed to update problem statement: " + error);
     }
   };
 
@@ -99,7 +106,7 @@ const FacultyDashboard: React.FC = () => {
       <Navbar />
       <div className="min-h-screen flex flex-col justify-center items-center mt-12">
         <form onSubmit={handleSubmit(onSubmit)} className="p-8 rounded-lg w-full max-w-xl">
-          <h1 className="text-white text-2xl font-semibold mb-6">Submit a Problem Statement</h1>
+          <h1 className="text-white text-2xl font-semibold mb-6">Update Problem Statement</h1>
 
           <div className="mb-4">
             <label htmlFor="problemStatement" className="block text-white text-sm font-bold mb-2">Problem Statement ({problemCharCount}/50)</label>
@@ -172,8 +179,8 @@ const FacultyDashboard: React.FC = () => {
             {errors.hashtags && <span className="text-red-500 text-sm">Please enter between 3 and 5 hashtags.</span>}
           </div>
           <div className='flex justify-between'>
-            <button type="button" className="bg-orange-500 text-white font-medium text-center rounded-full hover:bg-orange-600 px-10 py-2" onClick={() => router.push('/dashboard/faculty')}> 🡨 Back</button>
-            <button type="submit" className="bg-orange-500 text-white font-medium text-center rounded-full hover:bg-orange-600 px-10 py-2">Submit</button>
+            <button type="button" className="bg-orange-500 text-white font-medium text-center rounded-full hover:bg-orange-600 px-10 py-2" onClick={() => router.push('/dashboard/faculty')}>🡨 Back</button>
+            <button type="submit" className="bg-orange-500 text-white font-medium text-center rounded-full hover:bg-orange-600 px-10 py-2">Update</button>
           </div>
         </form>
         <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
@@ -182,4 +189,4 @@ const FacultyDashboard: React.FC = () => {
   );
 };
 
-export default FacultyDashboard;
+export default UpdateProblemStatement;

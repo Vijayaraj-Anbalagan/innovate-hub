@@ -1,5 +1,5 @@
-'use client'
-// components/Navbar.tsx
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -8,11 +8,17 @@ import { signOut } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+    showBackButton?: boolean;
+    backButtonRoute?: string;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ showBackButton = false, backButtonRoute = '/' }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [showProfileOptions, setShowProfileOptions] = useState(false);
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-    const [userProfile, setUserProfile] = useState<{ name: string, imageUrl: string | null }>({ name: '', imageUrl: null });
+    const [userProfile, setUserProfile] = useState<{ name: string, imageUrl: string | null, role: string | null }>({ name: '', imageUrl: null, role: null });
+    const [showNavbar, setShowNavbar] = useState(true);
     const router = useRouter();
 
     useEffect(() => {
@@ -24,12 +30,33 @@ const Navbar: React.FC = () => {
                     const userData = userDoc.data();
                     setUserProfile({
                         name: userData.name || 'No Name',
-                        imageUrl: userData.imageUrl || null
+                        imageUrl: userData.imageUrl || null,
+                        role: userData.role || null
                     });
                 }
             };
             fetchUserProfile();
         }
+    }, []);
+
+    useEffect(() => {
+        let lastScrollTop = 0;
+        const handleScroll = () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop) {
+                // Scrolling down
+                setShowNavbar(false);
+            } else {
+                // Scrolling up
+                setShowNavbar(true);
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
     }, []);
 
     const handleLogout = async () => {
@@ -42,10 +69,25 @@ const Navbar: React.FC = () => {
         }
     };
 
+    const handleLogoClick = () => {
+        if (auth.currentUser && userProfile.role) {
+            router.push(`/dashboard/${userProfile.role}`);
+        } else {
+            router.push('/');
+        }
+    };
+
     return (
-        <nav className=" bg-inherit text-white mt-1">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                <Link href="/" className="text-orange-500 font-bold text-lg">Innovate Hub</Link>
+        <nav className={` bg-black text-white fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${showNavbar ? 'translate-y-0' : '-translate-y-full'}`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+                <div className="flex items-center space-x-4">
+                    {showBackButton && (
+                        <button onClick={() => router.push(backButtonRoute)} className="text-orange-500 text-lg cursor-pointer">
+                            &#8592;
+                        </button>
+                    )}
+                    <div onClick={handleLogoClick} className="text-orange-500 font-bold text-lg cursor-pointer">Innovate Hub</div>
+                </div>
                 <div className="flex items-center space-x-4">
                     {userProfile.imageUrl && (
                         <div className="relative" onClick={() => setShowProfileOptions(!showProfileOptions)}>
@@ -78,8 +120,8 @@ const Navbar: React.FC = () => {
                 </div>
             )}
             {showLogoutConfirm && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-4 rounded-lg space-y-4">
+                <div className=" bg-black bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="bg-white p-4 rounded-lg space-y-4 mb-4">
                         <p className="text-black font-semibold">Do you want to Logout?</p>
                         <div className="flex justify-between space-x-4">
                             <button onClick={handleLogout} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Yes</button>

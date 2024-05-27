@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { set } from 'firebase/database';
+import Navbar from '@/components/Navbar';
 
 const UpdateProfile = () => {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<ProfileFormData>();
@@ -59,6 +60,8 @@ const UpdateProfile = () => {
     };
 
     return (
+        <>
+        <Navbar />
         <div className="min-h-screen flex flex-col justify-center items-center">
             <form onSubmit={handleSubmit(onSubmit)} className="p-8 rounded-lg">
                 <h1 className="text-white text-2xl font-semibold mb-6">Update Your Details</h1>
@@ -86,6 +89,7 @@ const UpdateProfile = () => {
             </form>
             <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </div>
+        </>
     );
 };
 

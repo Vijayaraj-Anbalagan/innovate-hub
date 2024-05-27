@@ -15,6 +15,7 @@ const validSecretKeys = [
 const Register: React.FC = () => {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [phone, setPhone] = useState<string>(''); // Add phone number field
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [domain, setDomain] = useState<string>('');
@@ -72,6 +73,7 @@ const Register: React.FC = () => {
         await setDoc(doc(db, "users", user.uid), {
           name,
           email,
+          phone,  // Store the phone number in Firestore
           domain,
           expertise,
           imageUrl,
@@ -167,6 +169,19 @@ const Register: React.FC = () => {
             placeholder='Your email address'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required
+          />
+        </div>
+        {/* Phone Field */}
+        <div className="mb-4">
+          <label htmlFor="phone" className="block text-white text-sm font-bold mb-2">Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            placeholder='Your phone number'
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
