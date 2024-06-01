@@ -2,7 +2,7 @@
 // Define the types for your form data
 interface ProfileFormData {
   name: string;
-  phoneno: string;
+  phone: string;
   domain: string;
   expertise: string;
 }
@@ -29,7 +29,7 @@ const UpdateProfile = () => {
         if (docSnap.exists()) {
           const userData = docSnap.data() as ProfileFormData;
           setValue('name', userData.name);
-          setValue('phoneno', userData.phoneno);
+          setValue('phone', userData.phone);
           setValue('domain', userData.domain);
           setValue('expertise', userData.expertise);
         } else {
@@ -71,8 +71,8 @@ const UpdateProfile = () => {
           </div>
           <div className="mb-4">
             <label htmlFor="phoneno" className="block text-white text-sm font-bold mb-2">Phone Number</label>
-            <input {...register('phoneno', { required: true })} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-            {errors.phoneno && <span>This field is required</span>}
+            <input {...register('phone', { required: true })} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            {errors.phone && <span>This field is required</span>}
           </div>
           <div className="mb-4">
             <label htmlFor="domain" className="block text-white text-sm font-bold mb-2">Domain</label>
