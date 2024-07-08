@@ -23,7 +23,7 @@ export default function Home() {
      Expertise
   </p>
   <p className=" text-gray-400 text-sm mt-1 font-semibold">
-    Developed by Nipix Tech
+    Developed by <Link className="text-gray-400 text-sm mt-1 font-semibold" href="https://www.vjraj.online">Vijayaraj Anbalagan</Link>
   </p>
     </div>
     <div className="flex flex-col mt-4 justify-center">
