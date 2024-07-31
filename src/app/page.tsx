@@ -24,7 +24,7 @@ export default function Home() {
      Expertise
   </p>
   <p className=" text-gray-400 text-sm mt-1 font-semibold">
-    Developed by Nipix Tech
+    Developed by Team Ignite
   </p>
     </div>
     <div className="flex flex-col mt-4 justify-center">
