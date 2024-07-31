@@ -3,6 +3,7 @@ import Image from 'next/image';
 import logo from '/public/logo.png';
 import Link from 'next/link';
 
+
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
@@ -23,7 +24,7 @@ export default function Home() {
      Expertise
   </p>
   <p className=" text-gray-400 text-sm mt-1 font-semibold">
-    Developed by Nipix Tech
+    Developed by Team Ignite
   </p>
     </div>
     <div className="flex flex-col mt-4 justify-center">
@@ -34,7 +35,10 @@ export default function Home() {
       <Link href={'/login'} className="mt-8 bg-orange-500 text-white font-medium text-center rounded-full hover:bg-orange-600 button px-10 py-2">
         Get Started
       </Link>
-      </div>
+      <Link href={'/inth24'} className="mt-4 bg-orange-500 text-white font-medium text-center rounded-full hover:bg-orange-600 button px-10 py-2">
+        Innothon 24 
+        </Link>
+        </div>
     </div>
   </div>
   );
