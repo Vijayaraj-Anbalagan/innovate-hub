@@ -12,65 +12,52 @@ interface User {
   name: string;
   phone: string;
   email: string;
+  teamName: string;
+  teamCount: string;
+  problemStatementId: string;
   role: string;
-  imageUrl?: string;
-  domain?: string;
-  expertise?: string;
-  favoriteProblemStatements?: string[];
-}
-
-interface ProblemStatement {
-  createdBy: string;
-  id: string;
-  problemStatement: string;
+  imageUrl?: string
 }
 
 const AdminUsers: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [problemStatements, setProblemStatements] = useState<ProblemStatement[]>([]);
-  const [filter, setFilter] = useState('Students');
+  const [filter, setFilter] = useState('All');
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const querySnapshot = await getDocs(collection(db, 'users'));
-      const usersList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as User[];
-      setUsers(usersList);
-      setFilteredUsers(usersList.filter(user => user.role === 'student'));
-    };
-
-    const fetchProblemStatements = async () => {
-      const querySnapshot = await getDocs(collection(db, 'problemStatements'));
-      const problemStatementsList = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        createdBy: doc.data().createdBy,
-        problemStatement: doc.data().problemStatement
-      })) as ProblemStatement[];
-      setProblemStatements(problemStatementsList);
+      let allUsers: User[] = [];
+      for (let i = 1; i <= 10; i++) {
+        const collectionName = `part${i}`;
+        const querySnapshot = await getDocs(collection(db, collectionName));
+        const usersList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as User[];
+        allUsers = [...allUsers, ...usersList];
+      }
+      setUsers(allUsers);
+      setFilteredUsers(allUsers);
     };
 
     fetchUsers();
-    fetchProblemStatements();
   }, []);
 
   useEffect(() => {
-    if (filter === 'Students') {
-      setFilteredUsers(users.filter(user => user.role === 'student'));
-    } else if (filter === 'Industry') {
-      setFilteredUsers(users.filter(user => user.role === 'industry'));
-    } else if (filter === 'Faculty') {
-      setFilteredUsers(users.filter(user => user.role === 'faculty'));
-    } else if (filter === 'Others') {
-      setFilteredUsers(users.filter(user => user.role !== 'student' && user.role !== 'industry' && user.role !== 'faculty'));
+    if (filter === 'All') {
+      setFilteredUsers(users);
+    } else {
+      const partNumber = filter.split('-')[1];
+      setFilteredUsers(users.filter(user => user.problemStatementId === partNumber));
     }
   }, [filter, users]);
 
   const handleViewUser = async (id: string) => {
-    const userDoc = await getDoc(doc(db, 'users', id));
-    setSelectedUser({ id, ...userDoc.data() } as User);
+    // Find user from users array based on ID
+    const user = users.find(user => user.id === id);
+    if (user) {
+      setSelectedUser(user);
+    }
   };
 
   const handleDeleteUser = (user: User) => {
@@ -93,23 +80,16 @@ const AdminUsers: React.FC = () => {
     setUserToDelete(null);
   };
 
-  const getFavoriteProblemStatements = (favoriteProblemStatements: string[]) => {
-    return favoriteProblemStatements.map(statementId => {
-      const statement = problemStatements.find(problem => problem.id === statementId);
-      return statement ? statement.problemStatement.slice(0, 50) + '...' : statementId;
-    });
-  };
-
   return (
     <>
       <AdminNavbar />
-      <div className="min-h-screen bg-gray-100 flex flex-col p-12 mt-8">
+      <div className="min-h-screen flex flex-col p-12 mt-8 text-white">
         <h1 className="text-3xl font-bold mb-6">Manage Users</h1>
         <div className="flex space-x-2 mb-6">
-          {['Students', 'Industry', 'Faculty', 'Others'].map(tab => (
+          {['All', 'PS-1', 'PS-2', 'PS-3', 'PS-4', 'PS-5', 'PS-6', 'PS-7', 'PS-8', 'PS-9', 'PS-10'].map(tab => (
             <button
               key={tab}
-              className={`px-4 py-2 rounded-lg ${filter === tab ? 'bg-orange-500 text-white' : 'bg-white'}`}
+              className={`px-4 py-2 rounded-lg ${filter === tab ? 'bg-orange-500 text-white' : 'bg-white text-black'}`}
               onClick={() => setFilter(tab)}
             >
               {tab}
@@ -118,14 +98,15 @@ const AdminUsers: React.FC = () => {
         </div>
         <div className="flex">
           <div className="w-3/4">
-            <table className="min-w-full bg-white">
+            <table className="min-w-full bg-white text-black border-collapse">
               <thead>
                 <tr>
                   <th className="py-2 px-4 border-b">S.No</th>
                   <th className="py-2 px-4 border-b">Name</th>
-                  <th className="py-2 px-4 border-b">Phone</th>
                   <th className="py-2 px-4 border-b">Email</th>
-                  {filter !== 'Students' && <th className="py-2 px-4 border-b">Role</th>}
+                  <th className="py-2 px-4 border-b">Phone</th>
+                  <th className="py-2 px-4 border-b">Team Name</th>
+                  <th className="py-2 px-4 border-b">Team Members</th>
                   <th className="py-2 px-4 border-b">Actions</th>
                 </tr>
               </thead>
@@ -134,21 +115,16 @@ const AdminUsers: React.FC = () => {
                   <tr key={user.id} className="hover:bg-gray-100">
                     <td className="py-2 px-4 border-b">{index + 1}</td>
                     <td className="py-2 px-4 border-b">{user.name}</td>
-                    <td className="py-2 px-4 border-b">{user.phone}</td>
                     <td className="py-2 px-4 border-b">{user.email}</td>
-                    {filter !== 'Students' && <td className="py-2 px-4 border-b">{user.role}</td>}
+                    <td className="py-2 px-4 border-b">{user.phone}</td>
+                    <td className="py-2 px-4 border-b">{user.teamName}</td>
+                    <td className="py-2 px-4 border-b">{user.teamCount}</td>
                     <td className="py-2 px-4 border-b">
                       <button
                         className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
                         onClick={() => handleViewUser(user.id)}
                       >
                         View
-                      </button>
-                      <button
-                        className="bg-red-500 text-white px-3 py-1 rounded"
-                        onClick={() => handleDeleteUser(user)}
-                      >
-                        Delete
                       </button>
                     </td>
                   </tr>
@@ -158,7 +134,7 @@ const AdminUsers: React.FC = () => {
           </div>
           <div className="w-1/4 ml-4 bg-white p-4 rounded-lg shadow-lg">
             {selectedUser && (
-              <div>
+              <div className="text-black">
                 <h2 className="text-xl font-semibold mb-4">Profile</h2>
                 {selectedUser.imageUrl && (
                   <img src={selectedUser.imageUrl} alt="Profile" className="mb-4 w-24 h-24 rounded-full mx-auto" />
@@ -166,28 +142,10 @@ const AdminUsers: React.FC = () => {
                 <p><strong>Name:</strong> {selectedUser.name}</p>
                 <p><strong>Phone:</strong> {selectedUser.phone}</p>
                 <p><strong>Email:</strong> {selectedUser.email}</p>
-                <p><strong>Domain:</strong> {selectedUser.domain}</p>
-                <p><strong>Expertise:</strong> {selectedUser.expertise}</p>
-                {selectedUser.role === 'student' && (
-                  <>
-                    <h3 className="text-lg font-semibold mt-4">Favorite Problem Statements</h3>
-                    <ul className="list-disc list-inside">
-                      {getFavoriteProblemStatements(selectedUser.favoriteProblemStatements || []).map(statement => (
-                        <li key={statement}>{statement}</li>
-                      ))}
-                    </ul>
-                  </>
-                )}
-                {selectedUser.role !== 'student' && (
-                  <>
-                    <h3 className="text-lg font-semibold mt-4">Created Problem Statements</h3>
-                    <ul className="list-disc list-inside">
-                      {problemStatements.filter(problem => problem.createdBy === selectedUser.id).map(problem => (
-                        <li key={problem.id}>{problem.problemStatement.slice(0, 50)}...</li>
-                      ))}
-                    </ul>
-                  </>
-                )}
+                <p><strong>Team Name:</strong> {selectedUser.teamName}</p>
+                <p><strong>Team Members:</strong> {selectedUser.teamCount}</p>
+                <p><strong>Role:</strong> {selectedUser.role}</p>
+                <p><strong>PS ID:</strong> {selectedUser.problemStatementId}</p>
               </div>
             )}
           </div>

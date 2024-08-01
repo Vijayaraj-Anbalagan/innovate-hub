@@ -21,8 +21,10 @@ const Login: React.FC<LoginProps> = () => {
     setError(''); // Clear previous errors
 
     // Hardcoded check for admin credentials
-    if (email === 'admin@kcg' && password === 'kcg24cse4c') {
+    if (email === 'admin@kcg' && password === 'kcg24cse5c') {
       router.push('/admin');
+    } else if (email === 'inthadmin' && password === 'inthadminpanel24atdb') {
+      router.push('/inthadminpanel24atdb');
     } else {
       // Proceed with Firebase authentication for other users
       signInWithEmailAndPassword(auth, email, password)

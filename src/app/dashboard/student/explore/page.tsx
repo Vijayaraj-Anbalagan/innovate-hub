@@ -122,13 +122,13 @@ const Explore: React.FC = () => {
             className="flex flex-col items-center"
           >
             {problemStatements.map((problem) => (
-              <div key={problem.id} className="bg-gray-200 text-black rounded-lg p-4 shadow-lg mb-6 w-full max-w-md">
+              <div key={problem.id} className="bg-gray-200 text-black rounded-lg p-4 shadow-lg mb-6 w-full max-w-sm overflow-hidden white-space break-words">
                 <div className="mb-4">
-                  <h2 className="text-lg font-semibold">Problem Statement</h2>
+                  <h2 className="text-lg font-semibold text-wrap text-left">Problem Statement</h2>
                   <p className="text-xl">{problem.problemStatement}</p>
                 </div>
                 <div className="mb-4">
-                  <h3 className="text-lg font-semibold">Expected Outcome</h3>
+                  <h3 className="text-lg font-semibold text-wrap text-left break-words">Expected Outcome</h3>
                   <p className="text-lg">{problem.expectedOutcome}</p>
                 </div>
                 <div className="mb-4">

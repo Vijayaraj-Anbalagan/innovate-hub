@@ -122,6 +122,9 @@ const StudentDashboard: React.FC = () => {
             <button className="bg-orange-500 text-white font-medium rounded-full hover:bg-orange-600 px-10 py-2 mt-4" onClick={() => router.push('/dashboard/student/explore')}>
               Explore
             </button>
+            <button className='bg-orange-500 text-white font-medium rounded-full hover:bg-gray-700 px-10 py-2 ml-4 mt-4' onClick={() => router.push('/inth24')}>
+              Innothon Statements
+            </button>
           </div>
         </div>
       </div>

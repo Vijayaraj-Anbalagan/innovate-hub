@@ -24,8 +24,8 @@ const AdminDashboard: React.FC = () => {
     return (
         <>
             <AdminNavbar />
-            <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-10 mt-16">
-                <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+            <div className="min-h-screen flex flex-col items-center pt-10 mt-16">
+                <h1 className="text-3xl font-bold mb-6 text-white">Admin Dashboard</h1>
                 <div className="flex space-x-6">
                     <div className="bg-white p-6 rounded-lg shadow-lg text-center">
                         <h2 className="text-2xl font-semibold">Total Users</h2>
@@ -39,6 +39,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="mt-8">
                     <Link href="/admin/users" className="bg-orange-500 text-white px-4 py-2 rounded-lg mr-4">Manage Users</Link>
                     <Link href="/admin/problems" className="bg-orange-500 text-white px-4 py-2 rounded-lg">Manage Problem Statements</Link>
+                    <Link href="/inthadminpanel24atdb" className="bg-orange-500 text-white px-4 py-2 rounded-lg ml-4">Manage Innothon 24</Link>
                 </div>
             </div>
         </>

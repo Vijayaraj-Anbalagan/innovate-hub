@@ -43,7 +43,7 @@ const ViewProblemStatement: React.FC = () => {
     <div className="min-h-screen text-white">
  <Navbar showBackButton={true} backButtonRoute="/dashboard/faculty" />
       <div className="flex justify-center items-center p-4 mt-16">
-        <div className="bg-gray-200 text-black rounded-lg p-6 shadow-lg w-full max-w-md">
+        <div className="bg-gray-200 text-black rounded-lg p-6 shadow-lg w-full max-w-sm">
           <div className="mb-4">
             <h2 className="text-lg font-semibold">Problem Statement</h2>
             <p className="text-xl">{problemData.problemStatement}</p>
