@@ -44,7 +44,9 @@ const Login: React.FC<LoginProps> = () => {
     <div className="min-h-screen flex flex-col justify-center items-center mt-8">
       <form onSubmit={handleLogin}>
         <div className="flex flex-col items-center justify-center align-middle">
+          <Link href={'/'}>
           <Image src={logo} alt="Innovate Hub Logo" width={150} height={171} />
+          </Link>
         </div>
         <h1 className="text-white text-xl font-semibold mb-6 text-center mt-4">Log in to Innovate Hub</h1>
         {error && <p className="text-white text-sm mb-4 bg-red-600 p-1 rounded-lg px-2">{error}</p>}

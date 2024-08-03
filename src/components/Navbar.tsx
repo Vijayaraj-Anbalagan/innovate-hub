@@ -94,7 +94,6 @@ const Navbar: React.FC<NavbarProps> = ({ showBackButton = false, backButtonRoute
                             <Image src={userProfile.imageUrl} alt="Profile" className="w-8 h-8 rounded-full cursor-pointer" width={35} height={35} />
                             {showProfileOptions && (
                                 <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-xl text-black z-50">
-                                    <a className="block px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer" onClick={() => router.push('/update-details')}>Update Profile</a>
                                     <a className="block px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer" onClick={() => setShowLogoutConfirm(true)}>Logout</a>
                                 </div>
                             )}
