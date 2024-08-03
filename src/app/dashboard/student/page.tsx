@@ -98,7 +98,7 @@ const StudentDashboard: React.FC = () => {
           </div>
 
           <div className="mt-8 flex space-x-4">
-            <MentorSupport mode="locked" value="Locked" />
+            <MentorSupport mode="locked" value="Mentor" />
             <NotificationButton alert={false} />
           </div>
         </div>

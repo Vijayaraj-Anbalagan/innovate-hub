@@ -26,7 +26,7 @@ const OthersPage: React.FC = () => {
               <p className="text-gray-300 mb-2 text-lg"><strong>Background:</strong> {problem.background}</p>
               <p className="text-gray-300 mb-2 text-lg"><strong>Company:</strong> {problem.company}</p>
               <div className='flex flex-col sm:flex-row sm:justify-between mb-3'>
-                <Image src={problem.logo} alt={`${problem.company} logo`} width={50} height={50} className="mb-3 sm:mb-0" />
+                <Image src={problem.logo} alt={`${problem.company} logo`} width={70} height={70} className="mb-3 sm:mb-0" />
                 <div className="flex flex-wrap justify-center gap-2 mt-2 mb-3 sm:mt-0">
                   {problem.sdgGoals.map((goal, index) => (
                     <Image

@@ -54,7 +54,7 @@ const categories: Category[] = [
     name: 'Open Statement',
     description: 'Open-ended problem statements for creative solutions.',
     icon: <FiUserCheck className="text-orange-500 text-4xl mb-2" />,
-    link: '/inth24/openstatement',
+    link: '/inth24',
   },
 ];
 
