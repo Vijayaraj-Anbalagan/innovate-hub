@@ -5,11 +5,13 @@ import Navbar from '@/components/Navbar';
 import { aimlStatements } from '@/lib/aiml';
 import Image from 'next/image';
 import Link from 'next/link';
+import IndustryStatementsLink from '@/components/IndustryStatementsLink';
 
 const AimlPage: React.FC = () => {
   return (
     <>
       <Navbar showBackButton backButtonRoute='/inth24' />
+      <IndustryStatementsLink />
       <div className="min-h-screen p-12 text-white mt-14">
         <h1 className="text-4xl font-bold text-center text-orange-500 mb-8">AI and ML Problem Statements</h1>
         <p className="text-lg text-center max-w-4xl mb-8 mx-auto">
@@ -21,13 +23,13 @@ const AimlPage: React.FC = () => {
               
               <div className='flex flex-row justify-start align-middle'>
                 <h2 className="text-lg font-semibold text-orange-500 mb-2 mr-2">{problem.title}</h2>
-                <p className="text-md text-black mb-2 bg-white rounded-full p-1 px-2">{problem.psid}</p>
+                <p className="text-md text-black mb-2 bg-white rounded-full p-1 px-3">{problem.psid}</p>
               </div>
               <p className="text-lg text-gray-300 mb-2"><strong>Objective:</strong> {problem.objective}</p>
               <p className="text-gray-300 mb-2 text-lg"><strong>Background:</strong> {problem.background}</p>
-              <p className="text-gray-300 mb-2 text-lg"><strong>Company:</strong> {problem.company}</p>
+              <p className="text-gray-300 mb-2 text-lg"><strong>Industy:</strong> {problem.industy}</p>
               <div className='flex flex-col sm:flex-row sm:justify-between mb-3'>
-                <Image src={problem.logo} alt={`${problem.company} logo`} width={70} height={70} className="mb-3 sm:mb-0" />
+                <Image src={problem.logo} alt={`${problem.industy} logo`} width={70} height={70} className="mb-3 sm:mb-0" />
                 <div className="flex flex-wrap justify-center gap-2 mt-2 mb-3 sm:mt-0">
                   {problem.sdgGoals.map((goal, index) => (
                     <Image
