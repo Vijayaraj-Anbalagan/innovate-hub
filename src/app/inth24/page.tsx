@@ -157,7 +157,7 @@ const Innothon24Page = () => {
                   <AiOutlineFileDone className="h-6 w-6 text-orange-500 mr-3" />
                   <div className="flex-grow">
                     <p className="text-sm font-medium">
-                      Participants are expected to develop a prototype for the chosen problem
+                      Participants are expected to develop a prototype for<br/> the chosen problem
                       statement.
                     </p>
                   </div>

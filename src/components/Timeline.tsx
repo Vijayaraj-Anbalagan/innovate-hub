@@ -8,11 +8,11 @@ const Timeline = () => {
           <div className="tl-header">
             <span className="tl-marker"></span>
             <p className="tl-title font-semibold">Registration Starts</p>
-            <time className="tl-time text-sm text-gray-500">12th Aug 2024</time>
+            <time className="tl-time text-sm text-gray-500">10th Aug 2024</time>
           </div>
           <div className="tl-body">
             <p>
-              Registration starts from 12th August.
+              Registration starts from 10th August.
             </p>
           </div>
         </div>
