@@ -109,11 +109,11 @@ const Innothon24Page = () => {
         </div>
 
         <h2 id="industry-statements" className="text-3xl font-bold text-center mb-8">Industry Challenges</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 items-center text-center">
           {categories.map((category) => (
             <div
               key={category.id}
-              className="border border-white p-6 rounded-lg shadow-lg hover:shadow-xl duration-300 cursor-pointer flex flex-col items-center text-center"
+              className="border border-white p-6 rounded-lg shadow-lg hover:shadow-xl duration-300 cursor-pointer flex flex-col items-center text-center hover:scale-95"
               onClick={() => handleCardClick(category.link)}
             >
               {category.icon}

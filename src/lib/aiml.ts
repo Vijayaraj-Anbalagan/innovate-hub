@@ -106,7 +106,7 @@ export const aimlStatements = [
     objective: 'Create AI tools for diagnosing diseases from medical images, personalized treatment recommendations, or remote patient monitoring systems.',
     background: 'This project focuses on leveraging AI to revolutionize healthcare through the development of tools that can assist in disease diagnosis, personalized treatment planning, and continuous patient monitoring. The goal is to improve patient outcomes and healthcare efficiency.',
     industy: 'AI Based Solutions',
-    logo: '',
+    logo: '/logos/industry.jpg',
     sdgGoals: ['goal3', 'goal9']
   },
   {
@@ -116,7 +116,7 @@ export const aimlStatements = [
     objective: 'Build AI models for fraud detection, based on transaction patterns, and migrate from rule-based to LLM-based approaches.',
     background: 'The aim is to develop AI systems that enhance the security of financial institutions by identifying fraudulent activities through smart alerts and analyzing transaction patterns with advanced AI models.',
     industy: ' AI Based Solutions',
-    logo: '',
+    logo: '/logos/industry.jpg',
     sdgGoals: ['goal9', 'goal16']
   },
   {
