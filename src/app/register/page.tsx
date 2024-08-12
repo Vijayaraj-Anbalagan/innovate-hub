@@ -63,7 +63,7 @@ const Register: React.FC = () => {
   const [teamName, setTeamName] = useState<string>('');
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [role, setRole] = useState<string>('');
+  const [role, setRole] = useState<string>('student');
   const [secretKey, setSecretKey] = useState<string>('');
   const [domain, setDomain] = useState<string>('');
   const [expertise, setExpertise] = useState<string>('');
@@ -122,7 +122,7 @@ const Register: React.FC = () => {
     ) {
       return true;
     }
-    return null
+    return null;
   };
 
   const handlePsidChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -670,17 +670,32 @@ const Register: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg text-black max-w-lg w-full">
             <h2 className="text-2xl font-bold mb-4">Confirm Your Details</h2>
-            <p><strong>Name:</strong> {name}</p>
-            <p><strong>Team Name:</strong> {teamName}</p>
-            <p><strong>Team Count:</strong> {teamCount}</p>
-            <p><strong>Phone:</strong> {phone}</p>
-            <p><strong>Email:</strong> {email}</p>
-            {psid && <p><strong>Problem Statement:</strong> {psid} {osCategory && `- (${osCategory})`}</p>}
-            {os && (
+            <p>
+              <strong>Name:</strong> {name}
+            </p>
+            <p>
+              <strong>Team Name:</strong> {teamName}
+            </p>
+            <p>
+              <strong>Team Count:</strong> {teamCount}
+            </p>
+            <p>
+              <strong>Phone:</strong> {phone}
+            </p>
+            <p>
+              <strong>Email:</strong> {email}
+            </p>
+            {psid && (
               <p>
-                <strong>Open Statement:</strong> {osProblemStatement}
+                <strong>Problem Statement:</strong> {psid}{' '}
+                {osCategory && `- (${osCategory})`}
               </p>
             )}
+            <p>
+              <strong>Open Statement:</strong>
+              <p>{psTitle ? psTitle : osProblemStatement}</p>
+            </p>
+
             <div className="flex justify-end mt-4">
               <button
                 className="bg-green-500 text-white px-4 py-2 rounded mr-2"
