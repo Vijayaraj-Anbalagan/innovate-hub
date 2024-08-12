@@ -194,15 +194,15 @@ const StudentDashboard: React.FC = () => {
         {!paid && (
           <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
             <div className="bg-white p-6 rounded-lg text-black w-full max-w-lg sm:max-w-2xl shadow-2xl">
-              <h2 className="text-xl font-bold mb-3 text-center">
+              <h2 className="text-xl font-bold mb-1 text-center">
                 Complete Your Registration
               </h2>
-              <p className="text-lg mb-3 text-center">
+              <p className="text-lg mb-2 text-center">
                 Please complete your registration by making the payment to
                 access the full dashboard.
               </p>
 
-              <div className="mb-3">
+              <div className="mb-2">
                 <p className="text-md font-semibold mb-2">
                   <i className="fas fa-university mr-2"></i> Bank Details:
                 </p>
@@ -224,8 +224,8 @@ const StudentDashboard: React.FC = () => {
                   </p>
                 </div>
               </div>
-
-              <div className="mb-3">
+            <div className='flex flex-row '>
+              <div className="flex flex-col mb-3 w-1/2">
                 <p className="text-md font-semibold mb-2">
                   <i className="fas fa-receipt mr-2"></i> Payment Summary:
                 </p>
@@ -242,7 +242,16 @@ const StudentDashboard: React.FC = () => {
                   </p>
                 </div>
               </div>
-
+              <div className='flex flex-col mb-3 ml-4 w-1/2'>
+              <p className="text-md font-semibold mb-2">
+                  <i className="fas fa-receipt mr-2"></i>Please Mention Remarks as:
+                </p>
+                <p className='p-2 border border-dashed border-black rounded-sm text-center'>
+                    <strong>Innothon 24</strong>
+                    
+                  </p>
+              </div>
+            </div>
               <div className="mb-3">
                 <label
                   htmlFor="paymentScreenshot"
@@ -277,7 +286,7 @@ const StudentDashboard: React.FC = () => {
                 className={`w-full text-white py-2 px-4 rounded-lg text-lg font-semibold ${
                   uploading
                     ? 'bg-gray-400 cursor-not-allowed'
-                    : !uploaded ? 'bg-orange-500 hover:bg-orange-600' : 'bg-yellow-500'
+                    : !uploaded ? 'bg-orange-500 hover:bg-orange-600' : 'bg-yellow-500 cursor-wait'
                 } transition-all duration-300`}
               >
                 {uploading ? (
@@ -297,7 +306,8 @@ const StudentDashboard: React.FC = () => {
                   </p>
                   <p className="text-sm text-gray-600 mt-2">
                     We will verify your registration shortly. If it takes longer
-                    than expected, contact us at <strong>7358551897</strong>.
+                    than expected, contact us at <br/>
+                    <strong>+91 98849 95814</strong>.
                   </p>
                 </div>
               )}
