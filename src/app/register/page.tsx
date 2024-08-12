@@ -489,7 +489,7 @@ const Register: React.FC = () => {
             <p><strong>Team Count:</strong> {teamCount}</p>
             <p><strong>Phone:</strong> {phone}</p>
             <p><strong>Email:</strong> {email}</p>
-            {psid && <p><strong>Problem Statement:</strong> {psid} {osCategory && `- (${osCategory})`}</p>}
+            {psid && <p><strong>Problem Statement:</strong> {psid} - {psTitle} {osCategory && `- (${osCategory})`}</p>}
             {os && (
             <p><strong>Open Statement:</strong> {osProblemStatement}</p>
             )}
