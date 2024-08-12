@@ -39,7 +39,9 @@ const StudentDashboard: React.FC = () => {
           setStudentPsid(userData.psid);
           setPaid(userData.paid);
           setTeamCount(userData.teamCount || 1);
-          setUploaded(true);
+          if (userData.paymentScreenshot) {
+            setUploaded(true);
+          }
           if (userData.psid === 'PS-OPEN' && userData.os) {
             const osParts = userData.os.split(':');
             const problemStatement = osParts
@@ -224,34 +226,34 @@ const StudentDashboard: React.FC = () => {
                   </p>
                 </div>
               </div>
-            <div className='flex flex-row '>
-              <div className="flex flex-col mb-3 w-1/2">
-                <p className="text-md font-semibold mb-2">
-                  <i className="fas fa-receipt mr-2"></i> Payment Summary:
-                </p>
-                <div className="bg-gray-100 p-2 rounded-lg text-sm">
-                  <p>
-                    <strong>Team Count:</strong> {teamCount}
+              <div className="flex flex-row ">
+                <div className="flex flex-col mb-3 w-1/2">
+                  <p className="text-md font-semibold mb-2">
+                    <i className="fas fa-receipt mr-2"></i> Payment Summary:
                   </p>
-                  <p>
-                    <strong>Registration Fee:</strong> ₹100 per member
+                  <div className="bg-gray-100 p-2 rounded-lg text-sm">
+                    <p>
+                      <strong>Team Count:</strong> {teamCount}
+                    </p>
+                    <p>
+                      <strong>Registration Fee:</strong> ₹100 per member
+                    </p>
+                    <p>
+                      <strong>Total Amount:</strong> ₹{teamCount} X ₹100 ={' '}
+                      <span className="text-lg font-bold">₹{totalAmount}</span>
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col mb-3 ml-4 w-1/2">
+                  <p className="text-md font-semibold mb-2">
+                    <i className="fas fa-receipt mr-2"></i>Please Mention
+                    Remarks as:
                   </p>
-                  <p>
-                    <strong>Total Amount:</strong> ₹{teamCount} X ₹100 ={' '}
-                    <span className="text-lg font-bold">₹{totalAmount}</span>
+                  <p className="p-2 border border-dashed border-black rounded-sm text-center">
+                    <strong>Innothon 24</strong>
                   </p>
                 </div>
               </div>
-              <div className='flex flex-col mb-3 ml-4 w-1/2'>
-              <p className="text-md font-semibold mb-2">
-                  <i className="fas fa-receipt mr-2"></i>Please Mention Remarks as:
-                </p>
-                <p className='p-2 border border-dashed border-black rounded-sm text-center'>
-                    <strong>Innothon 24</strong>
-                    
-                  </p>
-              </div>
-            </div>
               <div className="mb-3">
                 <label
                   htmlFor="paymentScreenshot"
@@ -286,7 +288,9 @@ const StudentDashboard: React.FC = () => {
                 className={`w-full text-white py-2 px-4 rounded-lg text-lg font-semibold ${
                   uploading
                     ? 'bg-gray-400 cursor-not-allowed'
-                    : !uploaded ? 'bg-orange-500 hover:bg-orange-600' : 'bg-yellow-500 cursor-wait'
+                    : !uploaded
+                    ? 'bg-orange-500 hover:bg-orange-600'
+                    : 'bg-yellow-500 cursor-wait'
                 } transition-all duration-300`}
               >
                 {uploading ? (
@@ -306,7 +310,7 @@ const StudentDashboard: React.FC = () => {
                   </p>
                   <p className="text-sm text-gray-600 mt-2">
                     We will verify your registration shortly. If it takes longer
-                    than expected, contact us at <br/>
+                    than expected, contact us at <br />
                     <strong>+91 98849 95814</strong>.
                   </p>
                 </div>
