@@ -71,17 +71,17 @@ const AddTeam: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-8">
-      <h1 className="text-3xl font-bold mb-6">Add Your Team Information</h1>
+      <h1 className="text-3xl font-bold mb-6 text-white">Add Your Team Information</h1>
 
       <div className="w-full max-w-3xl">
         <div className="mb-4">
-          <h2 className="text-xl font-semibold mb-2">Lead Name</h2>
+          <h2 className="text-xl font-semibold mb-2 text-white">Lead Name</h2>
           <p className="bg-gray-200 p-4 rounded-lg">{leadName}</p>
         </div>
 
         {teamMembers.map((member, index) => (
           <div key={index} className="mb-4">
-            <h2 className="text-xl font-semibold mb-2">Team Member {index + 1}</h2>
+            <h2 className="text-xl font-semibold mb-2 text-white">Team Member {index + 1}</h2>
             <div className="bg-gray-200 p-4 rounded-lg flex justify-between items-center">
               <p>{member.name || 'No information provided'}</p>
               <button

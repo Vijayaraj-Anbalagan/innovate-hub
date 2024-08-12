@@ -33,7 +33,7 @@ export default function Home() {
       
 
       <Link href={'/login'} className="mt-8 bg-orange-500 text-white font-medium text-center rounded-full hover:bg-orange-600 button px-10 py-2">
-        Get Started
+        Login
       </Link>
       <Link href={'/inth24'} className="mt-4 bg-orange-500 text-white font-medium text-center rounded-full hover:bg-orange-600 button px-10 py-2">
         Innothon 24 

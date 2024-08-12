@@ -79,10 +79,10 @@ const Login: React.FC<LoginProps> = () => {
           <Link href="/forgot-password" className="inline-block align-baseline  text-sm text-orange-500 hover:text-orange-600 mt-3">
             Forgot Password?
           </Link>
-          <p className="text-white mt-4">
+          {/* <p className="text-white mt-4">
             Need an account?{' '}
             <Link href="/register" className="text-orange-500 hover:text-orange-600 ml-1 text-center">Register</Link>
-          </p>
+          </p> */}
         </div>
       </form>
     </div>
