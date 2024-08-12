@@ -22,7 +22,6 @@ const TeamMember: React.FC = () => {
         if (userDoc.exists()) {
           const userData = userDoc.data();
           setTeamCount(userData.teamCount);
-
           // Determine if teamInfo should be true or false based on teamCount
           if (userData.teamCount === 1) {
             setTeamInfo(true);
@@ -56,7 +55,9 @@ const TeamMember: React.FC = () => {
       )}
       {teamInfo === true && (
         <div>
-          <p className="text-green-500 mb-4">Your team information is complete.</p>
+          <p className="text-green-500 mb-4">
+            Your team information is complete.
+          </p>
         </div>
       )}
     </div>

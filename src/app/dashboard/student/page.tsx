@@ -20,7 +20,7 @@ const StudentDashboard: React.FC = () => {
   const [studentPsid, setStudentPsid] = useState<string | null>(null);
   const [os, setOs] = useState<string | null>(null);
   const [osCategory, setOsCategory] = useState<string | null>(null);
-  const [paid, setPaid] = useState<boolean>(false);
+  const [paid, setPaid] = useState<boolean | null>(null);
   const [teamCount, setTeamCount] = useState<number>(1);
   const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
@@ -191,7 +191,7 @@ const StudentDashboard: React.FC = () => {
             <WhatsAppButton link={whatsappGroupLink} />
           </div>
         </div>
-        {!paid && (
+        {paid === false && (
           <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
             <div className="bg-white p-6 rounded-lg text-black w-full max-w-lg sm:max-w-2xl shadow-2xl">
               <h2 className="text-xl font-bold mb-3 text-center">
