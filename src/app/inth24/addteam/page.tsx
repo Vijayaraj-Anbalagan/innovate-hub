@@ -11,6 +11,7 @@ const AddTeam: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [editMemberIndex, setEditMemberIndex] = useState<number | null>(null);
   const [leadName, setLeadName] = useState<string>('');
+  const [isSaveDisabled, setIsSaveDisabled] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -46,6 +47,21 @@ const AddTeam: React.FC = () => {
     fetchTeamInfo();
   }, []);
 
+  useEffect(() => {
+    // Check if all team members have their details filled out
+    const allMembersFilled = teamMembers.every(
+      (member) =>
+        member.name &&
+        member.gender &&
+        member.phone &&
+        member.email &&
+        member.college &&
+        member.dept &&
+        member.state
+    );
+    setIsSaveDisabled(!allMembersFilled);
+  }, [teamMembers]);
+
   const handleEditClick = (index: number) => {
     setEditMemberIndex(index);
     setShowModal(true);
@@ -71,7 +87,9 @@ const AddTeam: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-8">
-      <h1 className="text-3xl font-bold mb-6 text-white">Add Your Team Information</h1>
+      <h1 className="text-3xl font-bold mb-6 text-white">
+        Add Your Team Information
+      </h1>
 
       <div className="w-full max-w-3xl">
         <div className="mb-4">
@@ -81,7 +99,9 @@ const AddTeam: React.FC = () => {
 
         {teamMembers.map((member, index) => (
           <div key={index} className="mb-4">
-            <h2 className="text-xl font-semibold mb-2 text-white">Team Member {index + 1}</h2>
+            <h2 className="text-xl font-semibold mb-2 text-white">
+              Team Member {index + 1}
+            </h2>
             <div className="bg-gray-200 p-4 rounded-lg flex justify-between items-center">
               <p>{member.name || 'No information provided'}</p>
               <button
@@ -96,7 +116,12 @@ const AddTeam: React.FC = () => {
 
         <button
           onClick={handleSave}
-          className="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-6 rounded-lg text-lg font-semibold mt-6 transition-all duration-300"
+          className={`w-full py-3 px-6 rounded-lg text-lg font-semibold mt-6 transition-all duration-300 ${
+            isSaveDisabled
+              ? 'bg-gray-500 cursor-not-allowed'
+              : 'bg-green-500 hover:bg-green-600 text-white'
+          }`}
+          disabled={isSaveDisabled}
         >
           Save Team Information
         </button>
