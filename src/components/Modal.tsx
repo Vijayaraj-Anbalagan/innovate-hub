@@ -158,7 +158,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, onSubmit, memberData }) => {
           <div className="mb-4">
             <label
               htmlFor="state"
-              className="block text-white text-sm font-bold mb-2"
+              className="block text-lg font-semibold mb-2"
             >
               State
             </label>
