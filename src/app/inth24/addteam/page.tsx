@@ -1,7 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  collection,
+  addDoc,
+  setDoc,
+  where,
+} from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { auth, db } from '@/lib/firebase';
 import Modal from '@/components/Modal';
@@ -80,7 +88,27 @@ const AddTeam: React.FC = () => {
     const user = auth.currentUser;
     if (user) {
       const userDocRef = doc(db, 'users', user.uid);
-      await updateDoc(userDocRef, { teamMembers, teamInfo: true });
+      await updateDoc(userDocRef, {
+        teamMembers,
+        teamInfo: true,
+      });
+      const userDoc = await getDoc(userDocRef);
+      const userData = userDoc.data();
+
+      const leadDetails = {
+        teamName: userData?.teamName,
+        teamCount: userData?.teamCount,
+        lead: {
+          name: userData?.name,
+          gender: userData?.gender,
+          phone: userData?.phone,
+          email: userData?.email,
+          college: userData?.college,
+          department: userData?.department,
+          state: userData?.state,
+        },
+      };
+      await setDoc(doc(db, 'teams', user.uid), { leadDetails, teamMembers });
       router.push('/dashboard');
     }
   };

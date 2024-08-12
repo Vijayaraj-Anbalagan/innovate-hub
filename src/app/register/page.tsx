@@ -122,7 +122,7 @@ const Register: React.FC = () => {
     ) {
       return true;
     }
-    return false;
+    return null
   };
 
   const handlePsidChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

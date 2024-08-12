@@ -20,7 +20,7 @@ const StudentDashboard: React.FC = () => {
   const [studentPsid, setStudentPsid] = useState<string | null>(null);
   const [os, setOs] = useState<string | null>(null);
   const [osCategory, setOsCategory] = useState<string | null>(null);
-  const [paid, setPaid] = useState<boolean | null>(null);
+  const [paid, setPaid] = useState<boolean | null | undefined>(undefined);
   const [teamCount, setTeamCount] = useState<number>(1);
   const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
@@ -111,6 +111,7 @@ const StudentDashboard: React.FC = () => {
   return (
     <>
       <Navbar />
+
       <div className="min-h-screen flex flex-col justify-center items-center text-white mt-16 relative">
         <div
           className={`p-8 w-full max-w-6xl transition-all duration-500 ${
@@ -141,32 +142,34 @@ const StudentDashboard: React.FC = () => {
               ).map((problem) => (
                 <div
                   key={problem.id}
-                  className="border border-white p-5 rounded-lg shadow-lg hover:shadow-xl duration-300 flex flex-col hover:scale-95 transition-all"
+                  className="border border-white p-5 rounded-lg shadow-lg hover:shadow-xl duration-300 flex flex-col justify-between hover:scale-95 transition-all"
                 >
-                  <div className="flex flex-row justify-start align-middle">
-                    <h2 className="text-lg font-semibold text-orange-500 mb-2 mr-2">
-                      {problem.title}
-                    </h2>
-                    <p className="text-md text-black mb-2 bg-white rounded-full p-1 px-2">
-                      {problem.psid}
+                  <div>
+                    <div className="flex justify-between items-start">
+                      <h2 className="text-lg font-semibold text-orange-500 mb-2 mr-2">
+                        {problem.title}
+                      </h2>
+                      <p className="text-md text-black mb-2 bg-white rounded-full p-1 px-2 text-center min-w-[90px]">
+                        {problem.psid}
+                      </p>
+                    </div>
+                    <p className="text-lg text-gray-300 mb-2 break-words">
+                      <strong>Objective:</strong> {problem.objective}
+                    </p>
+                    <p className="text-gray-300 mb-2 text-lg break-words">
+                      <strong>Background:</strong> {problem.background}
+                    </p>
+                    <p className="text-gray-300 mb-2 text-lg">
+                      <strong>Industry:</strong> {problem.industy}
                     </p>
                   </div>
-                  <p className="text-lg text-gray-300 mb-2">
-                    <strong>Objective:</strong> {problem.objective}
-                  </p>
-                  <p className="text-gray-300 mb-2 text-lg">
-                    <strong>Background:</strong> {problem.background}
-                  </p>
-                  <p className="text-gray-300 mb-2 text-lg">
-                    <strong>Industry:</strong> {problem.industy}
-                  </p>
                   <div className="flex flex-col sm:flex-row sm:justify-between mb-3">
                     <Image
                       src={problem.logo ?? ''}
                       alt={`${problem.industy} logo`}
-                      width={50}
-                      height={50}
-                      className="mb-3 sm:mb-0"
+                      width={56}
+                      height={56}
+                      className="mb-3 sm:mb-0 rounded-full"
                     />
                     <div className="flex flex-wrap justify-center gap-2 mt-2 mb-3 sm:mt-0">
                       {problem.sdgGoals &&
@@ -186,14 +189,13 @@ const StudentDashboard: React.FC = () => {
               ))
             )}
           </div>
-
           <div className="mt-8 flex space-x-4">
             <MentorSupport mode="locked" value="Mentor" />
             <NotificationButton alert />
             <WhatsAppButton link={whatsappGroupLink} />
           </div>
         </div>
-        {paid === false && (
+        {paid === null && (
           <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
             <div className="bg-white p-6 rounded-lg text-black w-full max-w-lg sm:max-w-2xl shadow-2xl">
               <h2 className="text-xl font-bold mb-1 text-center">

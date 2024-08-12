@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
@@ -11,7 +11,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     if (!auth.currentUser) {
-      router.push('/login');  // Redirect to login if not authenticated
+      router.push('/login'); // Redirect to login if not authenticated
       return;
     }
 
@@ -19,8 +19,8 @@ const Dashboard: React.FC = () => {
       if (!auth.currentUser) {
         return; // Return early if currentUser is null
       }
-      
-      const userDoc = doc(db, "users", auth.currentUser.uid);
+
+      const userDoc = doc(db, 'users', auth.currentUser.uid);
       const docSnap = await getDoc(userDoc);
 
       if (docSnap.exists()) {
@@ -30,19 +30,21 @@ const Dashboard: React.FC = () => {
         // Move redirection logic out of the data fetching function
         redirectBasedOnRole(fetchedRole);
       } else {
-        console.log("No such document!");
+        console.log('No such document!');
         // Handle the case where the document does not exist
       }
     };
 
     fetchUserData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]); // Remove 'role' from the dependency array
 
   const redirectBasedOnRole = (role: string) => {
     // Ensure the role is checked after it's fetched and state update has completed
     if (role === 'student') {
       router.push('/dashboard/student');
+    } else if (role === 'admin') {
+      router.push('/admin');
     } else {
       router.push('/dashboard/faculty');
     }

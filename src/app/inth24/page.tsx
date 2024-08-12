@@ -151,7 +151,7 @@ const Innothon24Page = () => {
                     <p className="text-sm font-medium">
                       Enrollment Fee Rs.100/- per Participant
                       <br />
-                      Rs.250/- per person for the finalists
+                      Rs.350/- per person for the finalists
                     </p>
                   </div>
                 </div>

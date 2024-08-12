@@ -18,7 +18,6 @@ const TeamMember: React.FC = () => {
         const userId = user.uid;
         const userDocRef = doc(db, 'users', userId);
         const userDoc = await getDoc(userDocRef);
-
         if (userDoc.exists()) {
           const userData = userDoc.data();
           setTeamCount(userData.teamCount);
@@ -26,12 +25,11 @@ const TeamMember: React.FC = () => {
           if (userData.teamCount === 1) {
             setTeamInfo(true);
           } else {
-            setTeamInfo(userData.teamInfo || false);
+            setTeamInfo(userData.teamInfo);
           }
         }
       }
     };
-
     fetchTeamInfo();
   }, []);
 
