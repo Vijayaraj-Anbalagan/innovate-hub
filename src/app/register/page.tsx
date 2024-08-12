@@ -498,19 +498,21 @@ const Register: React.FC = () => {
                 htmlFor="teamCount"
                 className="block text-white text-sm font-bold mb-2"
               >
-                Team Count ( Incl Lead )
+                Team Count (Incl Lead)
               </label>
-              <input
-                type="number"
+              <select
                 id="teamCount"
-                placeholder="Your Team Count"
                 value={teamCount}
                 onChange={(e) => setTeamCount(Number(e.target.value))}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                min={1}
-                max={5}
                 required
-              />
+              >
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+                <option value={4}>4</option>
+                <option value={5}>5</option>
+              </select>
             </div>
             <div className="mb-4">
               <label

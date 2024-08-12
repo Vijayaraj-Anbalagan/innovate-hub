@@ -2,7 +2,7 @@ import React from 'react';
 
 const Timeline = () => {
   return (
-    <main className="min-h-screen  text-white flex justify-center items-center p-6">
+    <main className="min-h-screen  text-white flex justify-center items-center">
       <div className="timeline  text-white max-w-lg p-6 rounded-lg shadow-lg">
         <div className="tl-content tl-content-active">
           <div className="tl-header">
@@ -24,7 +24,7 @@ const Timeline = () => {
             <time className="tl-time text-sm text-gray-500">31st Aug 2024</time>
           </div>
           <div className="tl-body">
-            <p>Well review your application and will let you know.</p>
+            <p>{`We'll review your application and will let you know.`}</p>
           </div>
         </div>
 
