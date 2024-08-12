@@ -2,7 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  updateProfile,
+} from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { auth, db, storage } from '@/lib/firebase';
@@ -10,13 +14,43 @@ import { Statements } from '@/lib/allps';
 import { useRouter } from 'next/navigation';
 
 const states = [
-  'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 
-  'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 
-  'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'
+  'Andhra Pradesh',
+  'Arunachal Pradesh',
+  'Assam',
+  'Bihar',
+  'Chhattisgarh',
+  'Goa',
+  'Gujarat',
+  'Haryana',
+  'Himachal Pradesh',
+  'Jharkhand',
+  'Karnataka',
+  'Kerala',
+  'Madhya Pradesh',
+  'Maharashtra',
+  'Manipur',
+  'Meghalaya',
+  'Mizoram',
+  'Nagaland',
+  'Odisha',
+  'Punjab',
+  'Rajasthan',
+  'Sikkim',
+  'Tamil Nadu',
+  'Telangana',
+  'Tripura',
+  'Uttar Pradesh',
+  'Uttarakhand',
+  'West Bengal',
 ];
 
 const validSecretKeys = [
-  'IC24APLM', 'IC24QWHY', 'IC24YUJI', 'IC24BNHY', 'IC24VGYU', 'IC24XSWZ'
+  'IC24APLM',
+  'IC24QWHY',
+  'IC24YUJI',
+  'IC24BNHY',
+  'IC24VGYU',
+  'IC24XSWZ',
 ];
 
 const Register: React.FC = () => {
@@ -44,8 +78,8 @@ const Register: React.FC = () => {
   const [psTitle, setPsTitle] = useState<string>('');
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const [os, setOs] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-
 
   useEffect(() => {
     // Fetch open statement data from localStorage
@@ -54,7 +88,11 @@ const Register: React.FC = () => {
       const parsedData = JSON.parse(storedOpenStatement);
       if (parsedData) {
         const { problemStatement, category } = parsedData;
-        setOs(problemStatement && category ? `${problemStatement} : ${category.toUpperCase()}` : null);
+        setOs(
+          problemStatement && category
+            ? `${problemStatement} : ${category.toUpperCase()}`
+            : null
+        );
       }
     }
   }, []);
@@ -77,8 +115,11 @@ const Register: React.FC = () => {
     const domain = (email as string).split('@')[1]; // Get domain part after @
     const departmentCode = email.slice(4, 7); // Get characters at index 4, 5, 6 for department code
     const isCseStudent = email[2] === 'c' && email[3] === 's'; // Check if cs is at index 2, 3
-    
-    if (domain === 'kcgcollege.com' && (isCseStudent || departmentCode === '104' || departmentCode === '128')) {
+
+    if (
+      domain === 'kcgcollege.com' &&
+      (isCseStudent || departmentCode === '104' || departmentCode === '128')
+    ) {
       return true;
     }
     return false;
@@ -88,7 +129,8 @@ const Register: React.FC = () => {
     const selectedPsid = event.target.value;
     setPsid(selectedPsid);
     const statement = Statements.find((s) => s.psid === selectedPsid);
-    setPsTitle(statement ? statement.title || '': '');  };
+    setPsTitle(statement ? statement.title || '' : '');
+  };
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -103,6 +145,7 @@ const Register: React.FC = () => {
 
   const handleConfirmation = (confirm: boolean) => {
     if (confirm) {
+      setIsLoading(true);
       // Proceed with the registration process
       handleRegister();
     } else {
@@ -115,17 +158,21 @@ const Register: React.FC = () => {
     if (event) event.preventDefault();
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      setError('Passwords do not match.');
       return;
     }
     if (role !== 'student' && !validSecretKeys.includes(secretKey)) {
-      setError("Invalid secret key.");
+      setError('Invalid secret key.');
       return;
     }
     setError(''); // Clear previous errors
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
 
       let imageUrl = '';
@@ -135,20 +182,25 @@ const Register: React.FC = () => {
         imageUrl = await getDownloadURL(imageRef);
       }
 
-      await updateProfile(user, {
+      const data = await updateProfile(user, {
         displayName: name,
-        photoURL: imageUrl
+        photoURL:
+          imageUrl.length === 0
+            ? 'https://firebasestorage.googleapis.com/v0/b/innovate-hub.appspot.com/o/profileImages%2FYYqr48weiPcAau61kgsZkzXbJf42?alt=media&token=5dbb5087-fdeb-432c-b6cc-c5d056e87835'
+            : imageUrl,
       });
 
       const paid = determinePaidStatus(email);
       const teamInfo = teamCount === 1;
 
-
       const userDetails = {
         name,
         email,
         phone,
-        imageUrl,
+        imageUrl:
+          imageUrl.length === 0
+            ? 'https://firebasestorage.googleapis.com/v0/b/innovate-hub.appspot.com/o/profileImages%2FYYqr48weiPcAau61kgsZkzXbJf42?alt=media&token=5dbb5087-fdeb-432c-b6cc-c5d056e87835'
+            : imageUrl,
         role,
         gender,
         state,
@@ -164,10 +216,9 @@ const Register: React.FC = () => {
         designation: role !== 'student' ? designation : null,
         organization: role !== 'student' ? organization : null,
         paid,
-        teamInfo
+        teamInfo,
       };
-
-      await setDoc(doc(db, "users", user.uid), userDetails);
+      await setDoc(doc(db, 'users', user.uid), userDetails);
 
       const teamDetails = {
         teamName,
@@ -181,41 +232,72 @@ const Register: React.FC = () => {
           department,
           state,
         },
-        members: Array(teamCount - 1).fill({ name: '', gender: '', phone: '', email: '', college: '', department: '', state: '' }),
+        members: Array(teamCount - 1).fill({
+          name: '',
+          gender: '',
+          phone: '',
+          email: '',
+          college: '',
+          department: '',
+          state: '',
+        }),
       };
 
-      await setDoc(doc(db, "teams", user.uid), teamDetails);
+      await setDoc(doc(db, 'teams', user.uid), teamDetails);
 
-      router.push('/dashboard');  // Redirect to dashboard after registration
+      router.push('/dashboard'); // Redirect to dashboard after registration
+      setIsLoading(false);
     } catch (error: any) {
-      console.error("Registration error:", error.message);
+      console.error('Registration error:', error.message);
       setError(error.message);
     }
   };
 
   const osParts = os?.split(':');
-  const osProblemStatement = osParts ? osParts.slice(0, -1).join(':').trim() : '';
+  const osProblemStatement = osParts
+    ? osParts.slice(0, -1).join(':').trim()
+    : '';
   const osCategory = osParts ? osParts[osParts.length - 1].trim() : '';
-
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
-      <form onSubmit={(e) => { e.preventDefault(); setShowConfirmation(true); }} className="p-8 rounded-lg">
-        <h1 className="text-white text-2xl font-semibold mb-6">Register for Innovate Hub</h1>
-        {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setShowConfirmation(true);
+        }}
+        className="p-8 rounded-lg"
+      >
+        <h1 className="text-white text-2xl font-semibold mb-6">
+          Register for Innovate Hub
+        </h1>
+        {error && (
+          <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
+        )}
         <div className="mb-4 items-center justify-center align-middle">
-          <label htmlFor="profileImage" className="text-center block text-white text-sm font-bold mb-3">Profile Picture</label>
+          <label
+            htmlFor="profileImage"
+            className="text-center block text-white text-sm font-bold mb-3"
+          >
+            Profile Picture
+          </label>
           <input
             type="file"
             id="profileImage"
             onChange={handleImageChange}
             style={{ display: 'none' }}
             accept="image/*"
-            required
           />
-          <label htmlFor="profileImage" className='flex items-center justify-center align-middle'>
+          <label
+            htmlFor="profileImage"
+            className="flex items-center justify-center align-middle"
+          >
             {previewImage ? (
-              <img src={previewImage} alt="Profile preview" className="w-24 h-24 rounded-full cursor-pointer" />
+              <img
+                src={previewImage}
+                alt="Profile preview"
+                className="w-24 h-24 rounded-full cursor-pointer"
+              />
             ) : (
               <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer">
                 <span className="text-white text-lg">+</span>
@@ -224,7 +306,12 @@ const Register: React.FC = () => {
           </label>
         </div>
         <div className="mb-4">
-          <label htmlFor="role" className="block text-white text-sm font-bold mb-2">Select Your Role</label>
+          <label
+            htmlFor="role"
+            className="block text-white text-sm font-bold mb-2"
+          >
+            Select Your Role
+          </label>
           <select
             id="role"
             value={role}
@@ -243,7 +330,12 @@ const Register: React.FC = () => {
         </div>
         {role !== 'student' && (
           <div className="mb-4">
-            <label htmlFor="secretKey" className="block text-white text-sm font-bold mb-2">Enter Secret Key</label>
+            <label
+              htmlFor="secretKey"
+              className="block text-white text-sm font-bold mb-2"
+            >
+              Enter Secret Key
+            </label>
             <input
               type="text"
               id="secretKey"
@@ -256,11 +348,16 @@ const Register: React.FC = () => {
           </div>
         )}
         <div className="mb-4">
-          <label htmlFor="name" className="block text-white text-sm font-bold mb-2">Lead Name</label>
+          <label
+            htmlFor="name"
+            className="block text-white text-sm font-bold mb-2"
+          >
+            Lead Name
+          </label>
           <input
             type="text"
             id="name"
-            placeholder='Your name'
+            placeholder="Your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -268,7 +365,12 @@ const Register: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="gender" className="block text-white text-sm font-bold mb-2">Gender</label>
+          <label
+            htmlFor="gender"
+            className="block text-white text-sm font-bold mb-2"
+          >
+            Gender
+          </label>
           <select
             id="gender"
             value={gender}
@@ -283,7 +385,12 @@ const Register: React.FC = () => {
           </select>
         </div>
         <div className="mb-4">
-          <label htmlFor="state" className="block text-white text-sm font-bold mb-2">State</label>
+          <label
+            htmlFor="state"
+            className="block text-white text-sm font-bold mb-2"
+          >
+            State
+          </label>
           <select
             id="state"
             value={state}
@@ -293,16 +400,23 @@ const Register: React.FC = () => {
           >
             <option value="">Select State</option>
             {states.map((state) => (
-              <option key={state} value={state}>{state}</option>
+              <option key={state} value={state}>
+                {state}
+              </option>
             ))}
           </select>
         </div>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-white text-sm font-bold mb-2">Lead Email</label>
+          <label
+            htmlFor="email"
+            className="block text-white text-sm font-bold mb-2"
+          >
+            Lead Email
+          </label>
           <input
             type="email"
             id="email"
-            placeholder='Your email address'
+            placeholder="Your email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -310,11 +424,16 @@ const Register: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="phone" className="block text-white text-sm font-bold mb-2">Lead Phone Number</label>
+          <label
+            htmlFor="phone"
+            className="block text-white text-sm font-bold mb-2"
+          >
+            Lead Phone Number
+          </label>
           <input
             type="tel"
             id="phone"
-            placeholder='Your phone number'
+            placeholder="Your phone number"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -322,11 +441,16 @@ const Register: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="password" className="block text-white text-sm font-bold mb-2">Password</label>
+          <label
+            htmlFor="password"
+            className="block text-white text-sm font-bold mb-2"
+          >
+            Password
+          </label>
           <input
             type="password"
             id="password"
-            placeholder='Your password'
+            placeholder="Your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -334,11 +458,16 @@ const Register: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="confirmPassword" className="block text-white text-sm font-bold mb-2">Confirm Password</label>
+          <label
+            htmlFor="confirmPassword"
+            className="block text-white text-sm font-bold mb-2"
+          >
+            Confirm Password
+          </label>
           <input
             type="password"
             id="confirmPassword"
-            placeholder='Confirm your password'
+            placeholder="Confirm your password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -348,11 +477,16 @@ const Register: React.FC = () => {
         {role == 'student' && (
           <>
             <div className="mb-4">
-              <label htmlFor="teamName" className="block text-white text-sm font-bold mb-2">Team Name</label>
+              <label
+                htmlFor="teamName"
+                className="block text-white text-sm font-bold mb-2"
+              >
+                Team Name
+              </label>
               <input
                 type="text"
                 id="teamName"
-                placeholder='Your Team Name'
+                placeholder="Your Team Name"
                 value={teamName}
                 onChange={(e) => setTeamName(e.target.value)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -360,21 +494,33 @@ const Register: React.FC = () => {
               />
             </div>
             <div className="mb-6">
-              <label htmlFor="teamCount" className="block text-white text-sm font-bold mb-2">Team Count ( Incl Lead )</label>
-              <input
-                type="number"
+              <label
+                htmlFor="teamCount"
+                className="block text-white text-sm font-bold mb-2"
+              >
+                Team Count (Incl Lead)
+              </label>
+              <select
                 id="teamCount"
-                placeholder='Your Team Count'
                 value={teamCount}
                 onChange={(e) => setTeamCount(Number(e.target.value))}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                min={1}
-                max={5}
                 required
-              />
+              >
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+                <option value={4}>4</option>
+                <option value={5}>5</option>
+              </select>
             </div>
             <div className="mb-4">
-              <label htmlFor="psid" className="block text-white text-sm font-bold mb-2">Problem Statement ID</label>
+              <label
+                htmlFor="psid"
+                className="block text-white text-sm font-bold mb-2"
+              >
+                Problem Statement ID
+              </label>
               <select
                 id="psid"
                 value={psid}
@@ -384,7 +530,9 @@ const Register: React.FC = () => {
               >
                 <option value="">Select a PS-ID</option>
                 {Statements.map((statement) => (
-                  <option key={statement.psid} value={statement.psid}>{statement.psid}</option>
+                  <option key={statement.psid} value={statement.psid}>
+                    {statement.psid}
+                  </option>
                 ))}
               </select>
               {psTitle && (
@@ -392,7 +540,12 @@ const Register: React.FC = () => {
               )}
             </div>
             <div className="mb-4">
-              <label htmlFor="college" className="block text-white text-sm font-bold mb-2">College</label>
+              <label
+                htmlFor="college"
+                className="block text-white text-sm font-bold mb-2"
+              >
+                College
+              </label>
               <input
                 type="text"
                 id="college"
@@ -405,7 +558,12 @@ const Register: React.FC = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="department" className="block text-white text-sm font-bold mb-2">Department</label>
+              <label
+                htmlFor="department"
+                className="block text-white text-sm font-bold mb-2"
+              >
+                Department
+              </label>
               <input
                 type="text"
                 id="department"
@@ -421,11 +579,16 @@ const Register: React.FC = () => {
         {role !== 'student' && (
           <>
             <div className="mb-4">
-              <label htmlFor="domain" className="block text-white text-sm font-bold mb-2">Domain</label>
+              <label
+                htmlFor="domain"
+                className="block text-white text-sm font-bold mb-2"
+              >
+                Domain
+              </label>
               <input
                 type="text"
                 id="domain"
-                placeholder='Your Domain'
+                placeholder="Your Domain"
                 value={domain}
                 onChange={(e) => setDomain(e.target.value)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -433,11 +596,16 @@ const Register: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="expertise" className="block text-white text-sm font-bold mb-2">Expertise</label>
+              <label
+                htmlFor="expertise"
+                className="block text-white text-sm font-bold mb-2"
+              >
+                Expertise
+              </label>
               <input
                 type="text"
                 id="expertise"
-                placeholder='Your Expertise'
+                placeholder="Your Expertise"
                 value={expertise}
                 onChange={(e) => setExpertise(e.target.value)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -445,11 +613,16 @@ const Register: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="designation" className="block text-white text-sm font-bold mb-2">Designation</label>
+              <label
+                htmlFor="designation"
+                className="block text-white text-sm font-bold mb-2"
+              >
+                Designation
+              </label>
               <input
                 type="text"
                 id="designation"
-                placeholder='Your Designation'
+                placeholder="Your Designation"
                 value={designation}
                 onChange={(e) => setDesignation(e.target.value)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -457,11 +630,16 @@ const Register: React.FC = () => {
               />
             </div>
             <div className="mb-6">
-              <label htmlFor="organization" className="block text-white text-sm font-bold mb-2">Organization</label>
+              <label
+                htmlFor="organization"
+                className="block text-white text-sm font-bold mb-2"
+              >
+                Organization
+              </label>
               <input
                 type="text"
                 id="organization"
-                placeholder='Your Organization'
+                placeholder="Your Organization"
                 value={organization}
                 onChange={(e) => setOrganization(e.target.value)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -471,12 +649,20 @@ const Register: React.FC = () => {
           </>
         )}
         <div className="flex flex-col items-center align-middle justify-between mt-4">
-          <button className="mt-4 bg-orange-500 text-white font-medium text-center rounded-full hover:bg-orange-600 button px-10 py-2" type="submit">
+          <button
+            className="mt-4 bg-orange-500 text-white font-medium text-center rounded-full hover:bg-orange-600 button px-10 py-2"
+            type="submit"
+          >
             Register
           </button>
           <p className="text-white mt-4">
             Already have an account?{' '}
-            <Link href="/login" className="text-orange-500 hover:text-orange-600">Login</Link>
+            <Link
+              href="/login"
+              className="text-orange-500 hover:text-orange-600"
+            >
+              Login
+            </Link>
           </p>
         </div>
       </form>
@@ -489,16 +675,40 @@ const Register: React.FC = () => {
             <p><strong>Team Count:</strong> {teamCount}</p>
             <p><strong>Phone:</strong> {phone}</p>
             <p><strong>Email:</strong> {email}</p>
-            {psid && <p><strong>Problem Statement:</strong> {psid} - {psTitle} {osCategory && `- (${osCategory})`}</p>}
+            {psid && <p><strong>Problem Statement:</strong> {psid} {osCategory && `- (${osCategory})`}</p>}
             {os && (
-            <p><strong>Open Statement:</strong> {osProblemStatement}</p>
+              <p>
+                <strong>Open Statement:</strong> {osProblemStatement}
+              </p>
             )}
             <div className="flex justify-end mt-4">
               <button
                 className="bg-green-500 text-white px-4 py-2 rounded mr-2"
                 onClick={() => handleConfirmation(true)}
               >
-                Yes
+                {isLoading ? (
+                  <div role="status">
+                    <svg
+                      aria-hidden="true"
+                      className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                      viewBox="0 0 100 101"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                        fill="currentFill"
+                      />
+                    </svg>
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                ) : (
+                  'Yes'
+                )}
               </button>
               <button
                 className="bg-red-500 text-white px-4 py-2 rounded"
