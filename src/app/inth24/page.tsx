@@ -149,9 +149,9 @@ const Innothon24Page = () => {
                   />
                   <div className="flex-grow">
                     <p className="text-sm font-medium">
-                      Registration Fee: Rs.100/- per person for entry
+                      Enrollment Fee Rs.100/- per Participant
                       <br />
-                      Rs.350/- per person for the finalists
+                      Rs.250/- per person for the finalists
                     </p>
                   </div>
                 </div>

@@ -670,27 +670,12 @@ const Register: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg text-black max-w-lg w-full">
             <h2 className="text-2xl font-bold mb-4">Confirm Your Details</h2>
-            <p>
-              <strong>Name:</strong> {name}
-            </p>
-            <p>
-              <strong>Team Name:</strong> {teamName}
-            </p>
-            <p>
-              <strong>Team Count:</strong> {teamCount}
-            </p>
-            <p>
-              <strong>Phone:</strong> {phone}
-            </p>
-            <p>
-              <strong>Email:</strong> {email}
-            </p>
-            {psid && (
-              <p>
-                <strong>Problem Statement:</strong> {psid}{' '}
-                {osCategory && `- (${osCategory})`}
-              </p>
-            )}
+            <p><strong>Name:</strong> {name}</p>
+            <p><strong>Team Name:</strong> {teamName}</p>
+            <p><strong>Team Count:</strong> {teamCount}</p>
+            <p><strong>Phone:</strong> {phone}</p>
+            <p><strong>Email:</strong> {email}</p>
+            {psid && <p><strong>Problem Statement:</strong> {psid} {osCategory && `- (${osCategory})`}</p>}
             {os && (
               <p>
                 <strong>Open Statement:</strong> {osProblemStatement}
