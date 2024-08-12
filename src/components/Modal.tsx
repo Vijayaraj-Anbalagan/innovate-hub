@@ -55,7 +55,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, onSubmit, memberData }) => {
     'West Bengal',
   ];
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-2">
       <div className="bg-white p-8 rounded-lg max-w-lg w-full h-[80%] overflow-y-scroll">
         <h2 className="text-2xl font-semibold mb-6">
           Edit Team Member Information
