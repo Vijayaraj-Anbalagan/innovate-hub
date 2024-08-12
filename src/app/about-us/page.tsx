@@ -30,7 +30,7 @@ const AboutUsPage: React.FC = () => {
           <div className="flex flex-col items-center text-center max-w-4xl space-y-4">
             <FiAward className="text-orange-500 text-6xl mb-4" />
             <p className="text-lg">
-              Over the years, Innovate Hub has successfully guided numerous students to achieve remarkable milestones in their entrepreneurial journeys. Our alumni have gone on to become leaders and trendsetters in their respective fields.
+              Innovate Hub has aimed to successfully guide numerous students to achieve remarkable milestones in their entrepreneurial journeys. Such that Our Students will go on to become leaders and trendsetters one day in their respective fields.
             </p>
           </div>
         </div>

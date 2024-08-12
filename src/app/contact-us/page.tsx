@@ -32,18 +32,19 @@ const ContactPage: React.FC = () => {
             <FiMapPin className="text-orange-500 text-6xl mb-4" />
             <h2 className="text-3xl font-semibold mb-4">Our Location</h2>
             <p className="text-lg">
-              Innovate Hub, XYZ University, 123 Innovation Drive, City, Country.
+              Innovate Hub, CSE Department , KCG College of Technology , OMR , Chennai
             </p>
           </div>
           <div className="flex flex-col items-center text-center max-w-4xl mb-8 space-y-4">
             <FiPhone className="text-orange-500 text-6xl mb-4" />
             <h2 className="text-3xl font-semibold mb-4">Contact Number</h2>
-            <p className="text-lg">+123 456 7890</p>
+            <p className="text-lg">+91 73585 51897 
+              <br/> +91 75502 27793</p>
           </div>
           <div className="flex flex-col items-center text-center max-w-4xl mb-8 space-y-4">
             <FiMail className="text-orange-500 text-6xl mb-4" />
             <h2 className="text-3xl font-semibold mb-4">Email Address</h2>
-            <p className="text-lg">info@innovatehub.com</p>
+            <p className="text-lg">team.ignite.kcg@gmail.com</p>
           </div>
         </div>
         <div className="flex flex-col items-center">
