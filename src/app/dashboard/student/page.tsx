@@ -12,6 +12,7 @@ import Image from 'next/image';
 import MentorSupport from '@/components/MentorSupport';
 import NotificationButton from '@/components/NotificationButton';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import TeamMember from '@/components/TeamMember';
 
 const StudentDashboard: React.FC = () => {
   const [username, setUsername] = useState<string>('');
@@ -106,6 +107,7 @@ const StudentDashboard: React.FC = () => {
         <div className={`p-8 w-full max-w-6xl transition-all duration-500 ${paid ? 'blur-none' : 'blur-md'}`}>
           <h1 className="text-2xl font-semibold mb-4">Hi {username},</h1>
           <h2 className="text-lg font-semibold mb-6">{greeting}</h2>
+          <TeamMember />
 
           <h3 className="text-xl font-semibold mb-4">Your Problem Statement</h3>
 
@@ -149,21 +151,21 @@ const StudentDashboard: React.FC = () => {
 
           <div className="mt-8 flex space-x-4">
             <MentorSupport mode="locked" value="Mentor" />
-            <NotificationButton alert={false} />
+            <NotificationButton alert />
             <WhatsAppButton link={whatsappGroupLink} />
           </div>
         </div>
         {!paid && (
-  <div className="absolute inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
-    <div className="bg-white p-8 rounded-lg text-black max-w-md w-full shadow-xl">
-      <h2 className="text-3xl font-bold mb-6 text-center">Complete Your Registration</h2>
-      <p className="text-lg mb-6 text-center">
+  <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
+    <div className="bg-white p-6 rounded-lg text-black w-full max-w-lg sm:max-w-2xl shadow-2xl">
+      <h2 className="text-xl font-bold mb-3 text-center">Complete Your Registration</h2>
+      <p className="text-lg mb-3 text-center">
         Please complete your registration by making the payment to access the full dashboard.
       </p>
 
-      <div className="mb-6">
-        <p className="text-lg font-semibold mb-2"><i className="fas fa-university mr-2"></i> Bank Details:</p>
-        <div className="bg-gray-100 p-4 rounded-lg text-sm">
+      <div className="mb-3">
+        <p className="text-md font-semibold mb-2"><i className="fas fa-university mr-2"></i> Bank Details:</p>
+        <div className="bg-gray-100 p-2 rounded-lg text-sm">
           <p><strong>Account Name:</strong> KCG COLLEGE OF TECHNOLOGY</p>
           <p><strong>Bank Name:</strong> UNION BANK OF INDIA</p>
           <p><strong>Branch Name:</strong> SSI Guindy, Chennai - 600032</p>
@@ -172,17 +174,17 @@ const StudentDashboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="mb-6">
-        <p className="text-lg font-semibold mb-2"><i className="fas fa-receipt mr-2"></i> Payment Summary:</p>
-        <div className="bg-gray-100 p-4 rounded-lg text-sm">
+      <div className="mb-3">
+        <p className="text-md font-semibold mb-2"><i className="fas fa-receipt mr-2"></i> Payment Summary:</p>
+        <div className="bg-gray-100 p-2 rounded-lg text-sm">
           <p><strong>Team Count:</strong> {teamCount}</p>
           <p><strong>Registration Fee:</strong> ₹100 per member</p>
-          <p><strong>Total Amount:</strong> ₹{teamCount} * ₹100 = <span className="text-lg font-bold">₹{totalAmount}</span></p>
+          <p><strong>Total Amount:</strong> ₹{teamCount} X ₹100 = <span className="text-lg font-bold">₹{totalAmount}</span></p>
         </div>
       </div>
 
-      <div className="mb-6">
-        <label htmlFor="paymentScreenshot" className="block text-lg font-semibold mb-2">
+      <div className="mb-3">
+        <label htmlFor="paymentScreenshot" className="block text-md font-semibold mb-2">
           <i className="fas fa-upload mr-2"></i> Upload Payment Screenshot
         </label>
         <div className="relative">
@@ -219,7 +221,7 @@ const StudentDashboard: React.FC = () => {
       </button>
 
       {uploaded && (
-        <div className="mt-6 bg-green-100 p-4 rounded-lg text-center">
+        <div className="mt-3 bg-green-100 p-2 rounded-lg text-center">
           <p className="text-green-700 font-semibold"><i className="fas fa-check-circle mr-2"></i> Payment screenshot uploaded successfully!</p>
           <p className="text-sm text-gray-600 mt-2">We will verify your registration shortly. If it takes longer than expected, contact us at <strong>7358551897</strong>.</p>
         </div>
@@ -227,6 +229,8 @@ const StudentDashboard: React.FC = () => {
     </div>
   </div>
 )}
+
+
       
       </div>
     </>

@@ -141,6 +141,8 @@ const Register: React.FC = () => {
       });
 
       const paid = determinePaidStatus(email);
+      const teamInfo = teamCount === 1;
+
 
       const userDetails = {
         name,
@@ -161,10 +163,28 @@ const Register: React.FC = () => {
         expertise: role !== 'student' ? expertise : null,
         designation: role !== 'student' ? designation : null,
         organization: role !== 'student' ? organization : null,
-        paid
+        paid,
+        teamInfo
       };
 
       await setDoc(doc(db, "users", user.uid), userDetails);
+
+      const teamDetails = {
+        teamName,
+        teamCount,
+        lead: {
+          name,
+          gender,
+          phone,
+          email,
+          college,
+          department,
+          state,
+        },
+        members: Array(teamCount - 1).fill({ name: '', gender: '', phone: '', email: '', college: '', department: '', state: '' }),
+      };
+
+      await setDoc(doc(db, "teams", user.uid), teamDetails);
 
       router.push('/dashboard');  // Redirect to dashboard after registration
     } catch (error: any) {
