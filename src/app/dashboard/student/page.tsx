@@ -26,19 +26,27 @@ const StudentDashboard: React.FC = () => {
   const [uploading, setUploading] = useState<boolean>(false);
   const [uploaded, setUploaded] = useState<boolean>(false);
   const router = useRouter();
+  const [teamInfo, setTeamInfo] = useState<boolean | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        console.log('User', user);
         const userId = user.uid;
         const userDocRef = doc(db, 'users', userId);
         const userDoc = await getDoc(userDocRef);
+        console.log('UserDoc', userDoc);
         if (userDoc.exists()) {
           const userData = userDoc.data();
           setUsername(userData.name);
           setStudentPsid(userData.psid);
           setPaid(userData.paid);
           setTeamCount(userData.teamCount || 1);
+          if (userData.teamCount === 1) {
+            setTeamInfo(true);
+          } else {
+            setTeamInfo(userData.teamInfo);
+          }
           if (userData.paymentScreenshot) {
             setUploaded(true);
           }
@@ -67,7 +75,7 @@ const StudentDashboard: React.FC = () => {
     });
 
     return () => unsubscribe();
-  }, [router]);
+  }, [auth]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -111,7 +119,6 @@ const StudentDashboard: React.FC = () => {
   return (
     <>
       <Navbar />
-
       <div className="min-h-screen flex flex-col justify-center items-center text-white mt-16 relative">
         <div
           className={`p-8 w-full max-w-6xl transition-all duration-500 ${
@@ -120,7 +127,7 @@ const StudentDashboard: React.FC = () => {
         >
           <h1 className="text-2xl font-semibold mb-4">Hi {username},</h1>
           <h2 className="text-lg font-semibold mb-6">{greeting}</h2>
-          <TeamMember />
+          <TeamMember teamInfo={teamInfo} setTeamInfo={setTeamInfo} />
 
           <h3 className="text-xl font-semibold mb-4">Your Problem Statement</h3>
 

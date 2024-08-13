@@ -243,7 +243,31 @@ const Register: React.FC = () => {
         }),
       };
 
-      await setDoc(doc(db, 'teams', user.uid), teamDetails);
+      const leadDetails = {
+        teamName,
+        teamCount,
+        lead: {
+          name,
+          gender,
+          phone,
+          email,
+          college,
+          department,
+          state,
+        },
+      };
+
+      const teamMembers = Array(teamCount - 1).fill({
+        name: '',
+        gender: '',
+        phone: '',
+        email: '',
+        college: '',
+        department: '',
+        state: '',
+      });
+
+      await setDoc(doc(db, 'teams', user.uid), { leadDetails, teamMembers });
 
       router.push('/dashboard'); // Redirect to dashboard after registration
       setIsLoading(false);
@@ -687,12 +711,14 @@ const Register: React.FC = () => {
             </p>
             {psid && (
               <p>
-                <strong>Problem Statement:</strong> {psid}{' '}
+                <strong>Problem Statement ID:</strong> {psid}{' '}
                 {osCategory && `- (${osCategory})`}
               </p>
             )}
             <p>
-              <strong>Open Statement:</strong>
+              <strong>
+                {psTitle ? 'Problem Statement' : 'Open Statement'}
+              </strong>
               <p>{psTitle ? psTitle : osProblemStatement}</p>
             </p>
 

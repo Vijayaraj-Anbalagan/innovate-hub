@@ -44,7 +44,7 @@ const AimlPage: React.FC = () => {
                   <strong>Background:</strong> {problem.background}
                 </p>
                 <p className="text-gray-300 mb-2 text-lg">
-                  <strong>Industy:</strong> {problem.industy}
+                  <strong>Industry:</strong> {problem.industy}
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row sm:justify-between mb-3">
