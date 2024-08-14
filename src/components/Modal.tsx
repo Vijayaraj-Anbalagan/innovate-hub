@@ -20,7 +20,6 @@ const Modal: React.FC<ModalProps> = ({ onClose, onSubmit, memberData }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form',formData)
     onSubmit(formData);
   };
 

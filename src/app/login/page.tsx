@@ -30,7 +30,6 @@ const Login: React.FC<LoginProps> = () => {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Handle successful login here
-          console.log("Logged in user:", userCredential.user);
           router.push('/dashboard');
         })
         .catch((error) => {

@@ -20,7 +20,7 @@ const NotificationButton: React.FC<NotificationButtonProps> = ({ alert = false }
     <div className="relative">
       <button
         onClick={handleButtonClick}
-        className="flex items-center justify-center rounded-full w-12 h-12 md:w-20 md:h-20 lg:w-24 lg:h-24 border border-white text-white hover:bg-gray-200 hover:text-black transition-all duration-300"
+        className="flex items-center justify-center rounded-full w-12 h-12 md:w-20 md:h-20 lg:w-16 lg:h-16 border border-white text-white hover:bg-gray-200 hover:text-black transition-all duration-300"
       >
         <div className="relative">
           <FiBell className="text-xl md:text-2xl lg:text-3xl" />

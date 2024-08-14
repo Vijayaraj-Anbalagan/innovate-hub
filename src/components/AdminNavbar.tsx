@@ -3,6 +3,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { signOut } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 
 const AdminNavbar: React.FC = () => {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -10,8 +12,7 @@ const AdminNavbar: React.FC = () => {
 
   const handleLogout = async () => {
     setShowLogoutConfirm(false);
-    // Logic to sign out the user
-    // await signOut(auth);
+    await signOut(auth);
     router.push('/');
   };
 

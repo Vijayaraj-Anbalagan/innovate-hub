@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, where,query } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 import AdminNavbar from '@/components/AdminNavbar';
 import Link from 'next/link';
@@ -16,7 +16,6 @@ const AdminDashboard: React.FC = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log('user', user);
       if (user) {
         const userId = user.uid;
         const userDocRef = doc(db, 'users', userId);
@@ -26,7 +25,7 @@ const AdminDashboard: React.FC = () => {
           if (userData.role === 'admin') {
             setIsAdmin(true);
           } else {
-            router.push('/login');
+            router.push('/dashboard');
           }
         }
       } else {
@@ -34,12 +33,14 @@ const AdminDashboard: React.FC = () => {
       }
     });
 
-    unsubscribe();
+    return () => unsubscribe();
   }, [router]);
 
   useEffect(() => {
     const fetchCounts = async () => {
-      const usersSnapshot = await getDocs(collection(db, 'users'));
+      const usersSnapshot = await getDocs(
+        query(collection(db, 'users'), where('role', '==', 'student'))
+      );
       const problemsSnapshot = await getDocs(
         collection(db, 'problemStatements')
       );
@@ -93,7 +94,7 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div>No access</div>
+        <div className="text-white">No access</div>
       )}
     </>
   );
