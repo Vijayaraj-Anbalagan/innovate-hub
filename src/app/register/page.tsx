@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
   createUserWithEmailAndPassword,
@@ -82,7 +82,6 @@ const Register: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const id = searchParams.get('ps');
 
   useEffect(() => {
     // Fetch open statement data from localStorage
@@ -101,13 +100,14 @@ const Register: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const id = searchParams.get('ps');
     if (id) {
       setPsid(id as string);
 
       const statementTitle = Statements.find((s) => s.psid === id)?.title;
       setPsTitle(statementTitle as string);
     }
-  }, [id]);
+  }, []);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
@@ -777,4 +777,10 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Register/>
+    </Suspense>
+  );
+}
