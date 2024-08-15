@@ -3,7 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
-import { FiCpu, FiShield, FiActivity, FiBox, FiUserCheck, FiClipboard, FiPhoneCall } from 'react-icons/fi';
+import { FiCpu, FiShield, FiActivity, FiBox, FiUserCheck, FiClipboard, FiPhoneCall, FiCheckCircle } from 'react-icons/fi';
 import { MdOutlineWeb } from 'react-icons/md';
 import { FaVrCardboard } from 'react-icons/fa';
 import { BiBrain } from 'react-icons/bi';
@@ -54,10 +54,10 @@ const categories = [
 const evaluationCriteria = [
   { icon: <FaLightbulb className="text-white text-2xl" />, title: 'Solution' },
   { icon: <FaCheck className="text-white text-2xl" />, title: 'Feasibility' },
-  { icon: <FaTools className="text-white text-2xl" />, title: 'Optimization' },
   { icon: <FaLeaf className="text-white text-2xl" />, title: 'Sustainability' },
   { icon: <FiClipboard className="text-white text-2xl" />, title: 'Relevancy' },
   { icon: <FaChartLine className="text-white text-2xl" />, title: 'Innovation' },
+  { icons: <FiCheckCircle className="text-white text-2xl" />, title: 'Completeness' },
 ];
 
 const Innothon24Page = () => {
