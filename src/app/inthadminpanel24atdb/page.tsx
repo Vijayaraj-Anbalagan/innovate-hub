@@ -5,7 +5,9 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import AdminNavbar from '@/components/AdminNavbar';
 import Link from 'next/link';
-
+import withRoleBasedAccess from '@/components/withRoleBasedAccess';
+import StatementTable from '@/components/domainTable';
+import data from '../../lib/allProbStat.json';
 interface ProblemStatement {
   id: string;
   problemStatement: string;
@@ -28,24 +30,25 @@ const AdminInnothonPanel: React.FC = () => {
   const [userCount, setUserCount] = useState(0);
 
   useEffect(() => {
-    const fetchUserCount = async () => {
-      let totalCount = 0;
-      for (let i = 1; i <= 10; i++) {
-        const collectionName = `part${i}`;
-        const querySnapshot = await getDocs(collection(db, collectionName));
-        totalCount += querySnapshot.size;
-      }
-      setUserCount(totalCount);
+    const fetchCounts = async () => {
+      const usersSnapshot = await getDocs(
+        query(collection(db, 'users'), where('role', '==', 'student'))
+      );
+      const problemsSnapshot = await getDocs(
+        collection(db, 'problemStatements')
+      );
+      setUserCount(usersSnapshot.size);
     };
-
-    fetchUserCount();
+    fetchCounts();
   }, []);
 
   return (
-    <>
+    <main className="max-w-screen">
       <AdminNavbar />
       <div className="min-h-screen flex flex-col items-center pt-10 mt-16">
-        <h1 className="text-3xl font-bold mb-6 text-white">Innothon 24 Admin Panel</h1>
+        <h1 className="text-3xl font-bold mb-6 text-white">
+          Innothon 24 Admin Panel
+        </h1>
         <div className="flex space-x-6">
           <div className="bg-white p-6 rounded-lg shadow-lg text-center">
             <h2 className="text-2xl font-semibold">Total Users</h2>
@@ -53,32 +56,36 @@ const AdminInnothonPanel: React.FC = () => {
           </div>
           <div className="bg-white p-6 rounded-lg shadow-lg text-center">
             <h2 className="text-2xl font-semibold">Total Problem Statements</h2>
-            <p className="text-4xl mt-2">10</p>
+            <p className="text-4xl mt-2">33</p>
           </div>
-          <Link className="bg-white p-6 rounded-lg shadow-lg text-center text-2xl font-semibold" href={'/inthadminpanel24atdb/view'}>View All Participants</Link>
+          <Link
+            className="bg-white p-6 rounded-lg shadow-lg text-center text-2xl font-semibold"
+            href={'/admin/users'}
+          >
+            View All Participants
+          </Link>
         </div>
-        <div className="mt-8 w-full px-6 max-w-xl">
-         
-          <table className="min-w-full bg-white border-collapse">
-            <thead>
-              <tr>
-                <th className="py-2 px-4 border-b">S.No</th>
-                <th className="py-2 px-4 border-b">Problem Statement</th>
-              </tr>
-            </thead>
-            <tbody>
-              {problemStatements.map((problem, index) => (
-                <tr key={problem.id} className="hover:bg-gray-100">
-                  <td className="py-2 px-4 border-b text-center">{index + 1}</td>
-                  <td className="py-2 px-4 border-b text-center">{problem.problemStatement}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="space-y-8 mt-5 mx-5">
+          <StatementTable
+            title="AIML Statements"
+            statements={data.aimlStatements}
+          />
+          <StatementTable
+            title="Cyber Security Statements"
+            statements={data.cyberSecStatements}
+          />
+          <StatementTable
+            title="Web Development Statements"
+            statements={data.webDevStatements}
+          />
+          <StatementTable
+            title="AR/VR Statements"
+            statements={data.arvrStatements}
+          />
         </div>
       </div>
-    </>
+    </main>
   );
 };
 
-export default AdminInnothonPanel;
+export default withRoleBasedAccess(AdminInnothonPanel, 'admin');

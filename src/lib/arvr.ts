@@ -11,7 +11,7 @@ export const arvrStatements = [
   },
   {
     id: '2',
-    psid: 'PS-AR22',
+    psid: 'PS-AR2',
     title: 'Optimizing Industrial Training Programs',
     objective: 'Create an AR/VR solution to simulate hazardous or complex industrial environments for training purposes.',
     background: 'Traditional training methods in industrial settings often lack realism and fail to adequately prepare trainees for real-world scenarios. AR/VR can simulate dangerous or complex industrial environments, allowing trainees to gain practical experience in a safe, controlled setting.',

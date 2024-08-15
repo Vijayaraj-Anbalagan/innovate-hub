@@ -13,7 +13,7 @@ import { db } from '@/lib/firebase';
 import AdminNavbar from '@/components/AdminNavbar';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Image from 'next/image';
+import withRoleBasedAccess from '@/components/withRoleBasedAccess';
 
 interface User {
   id: string;
@@ -155,9 +155,9 @@ const AdminUsers: React.FC = () => {
     }
   };
   return (
-    <>
+    <main className="relative max-w-screen">
       <AdminNavbar />
-      <div className="min-h-screen bg-gray-100 mt-16 py-6 px-6 flex max-w-screen justify-between">
+      <div className="min-h-screen bg-gray-100 mt-16 py-6 px-6 flex max-w-screen justify-between relative">
         <div className="  flex flex-col w-[73%]">
           <h1 className="text-3xl font-bold mb-6">Manage Users</h1>
           <div className="flex space-x-2 mb-6">
@@ -207,11 +207,19 @@ const AdminUsers: React.FC = () => {
                 <tbody>
                   {filteredUsers.map((user, index) => (
                     <tr key={user.id} className="hover:bg-gray-100">
-                      <td className="py-2 px-4 border-b">{index + 1}</td>
-                      <td className="py-2 px-4 border-b">{user.name}</td>
-                      <td className="py-2 px-4 border-b">{user.phone}</td>
-                      <td className="py-2 px-4 border-b">{user.email}</td>
-                      <td className="py-2 px-4 border-b">
+                      <td className="py-2 px-4 border-b text-center">
+                        {index + 1}
+                      </td>
+                      <td className="py-2 px-4 border-b text-center">
+                        {user.name}
+                      </td>
+                      <td className="py-2 px-4 border-b text-center">
+                        {user.phone}
+                      </td>
+                      <td className="py-2 px-4 border-b text-center">
+                        {user.email}
+                      </td>
+                      <td className="py-2 px-4 border-b text-center">
                         <button
                           className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
                           onClick={() => handleViewUser(user.id)}
@@ -317,38 +325,6 @@ const AdminUsers: React.FC = () => {
               <p>
                 <strong>Email:</strong> {selectedUser.email}
               </p>
-              {/* {selectedUser.role === 'student' && (
-                <>
-                  <h3 className="text-lg font-semibold mt-4">
-                    Favorite Problem Statements
-                  </h3>
-                  <ul className="list-disc list-inside">
-                    {getFavoriteProblemStatements(
-                      selectedUser.favoriteProblemStatements || []
-                    ).map((statement) => (
-                      <li key={statement}>{statement}</li>
-                    ))}
-                  </ul>
-                </>
-              )} */}
-              {/* {selectedUser.role !== 'student' && (
-                <>
-                  <h3 className="text-lg font-semibold mt-4">
-                    Created Problem Statements
-                  </h3>
-                  <ul className="list-disc list-inside">
-                    {problemStatements
-                      .filter(
-                        (problem) => problem.createdBy === selectedUser.id
-                      )
-                      .map((problem) => (
-                        <li key={problem.id}>
-                          {problem.problemStatement.slice(0, 50)}...
-                        </li>
-                      ))}
-                  </ul>
-                </>
-              )} */}
               <div>
                 <button
                   onClick={handleClick}
@@ -357,18 +333,8 @@ const AdminUsers: React.FC = () => {
                   {isVisible ? 'Hide Payment Photo' : 'View Payment Photo'}
                 </button>
 
-                {isVisible && (
-                  <div>
-                    {selectedUser.paymentScreenshot ? (
-                      <img
-                        src={selectedUser.paymentScreenshot} // Replace with your photo URL
-                        alt="Payment Photo"
-                        style={{ marginTop: '10px', maxWidth: '100%' }}
-                      />
-                    ) : (
-                      'KCG CSE/CS Student'
-                    )}{' '}
-                  </div>
+                {isVisible && !selectedUser.paymentScreenshot && (
+                  <h1>KCG CSE/CS Student[No payment required]</h1>
                 )}
               </div>
               <div className="w-full flex justify-around mt-2">
@@ -400,8 +366,31 @@ const AdminUsers: React.FC = () => {
         draggable
         pauseOnHover
       />
-    </>
+      {isVisible && selectedUser?.paymentScreenshot && (
+        <div className="w-full min-h-screen bg-black/60 absolute top-0 flex justify-center">
+          <button
+            onClick={() => setIsVisible(false)}
+            className="absolute top-10 right-40 bg-white rounded-full z-40"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="40px"
+              viewBox="0 -960 960 960"
+              width="40px"
+              fill="black"
+            >
+              <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
+          </button>
+          <img
+            src={selectedUser?.paymentScreenshot} // Replace with your photo URL
+            alt="Payment Photo"
+            style={{ marginTop: '10px', maxWidth: '90%', maxHeight: '90%' }}
+          />
+        </div>
+      )}
+    </main>
   );
 };
 
-export default AdminUsers;
+export default withRoleBasedAccess(AdminUsers, 'admin');

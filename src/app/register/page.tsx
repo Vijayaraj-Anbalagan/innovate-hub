@@ -12,6 +12,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { auth, db, storage } from '@/lib/firebase';
 import { Statements } from '@/lib/allps';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 const states = [
   'Andhra Pradesh',
@@ -80,6 +81,8 @@ const Register: React.FC = () => {
   const [os, setOs] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get('ps');
 
   useEffect(() => {
     // Fetch open statement data from localStorage
@@ -96,6 +99,15 @@ const Register: React.FC = () => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (id) {
+      setPsid(id as string);
+
+      const statementTitle = Statements.find((s) => s.psid === id)?.title;
+      setPsTitle(statementTitle as string);
+    }
+  }, [id]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
@@ -186,7 +198,7 @@ const Register: React.FC = () => {
         displayName: name,
         photoURL:
           imageUrl.length === 0
-            ? 'https://firebasestorage.googleapis.com/v0/b/innovate-hub.appspot.com/o/profileImages%2FYYqr48weiPcAau61kgsZkzXbJf42?alt=media&token=5dbb5087-fdeb-432c-b6cc-c5d056e87835'
+            ? 'https://firebasestorage.googleapis.com/v0/b/innovate-hub.appspot.com/o/profileImages%2FPwCYHaMPD2bOWFr9gEQkhnoxI4A2?alt=media&token=5feb50cb-dd67-44f2-9f6f-ecf3f32c5b5d'
             : imageUrl,
       });
 
@@ -199,7 +211,7 @@ const Register: React.FC = () => {
         phone,
         imageUrl:
           imageUrl.length === 0
-            ? 'https://firebasestorage.googleapis.com/v0/b/innovate-hub.appspot.com/o/profileImages%2FYYqr48weiPcAau61kgsZkzXbJf42?alt=media&token=5dbb5087-fdeb-432c-b6cc-c5d056e87835'
+            ? 'https://firebasestorage.googleapis.com/v0/b/innovate-hub.appspot.com/o/profileImages%2FPwCYHaMPD2bOWFr9gEQkhnoxI4A2?alt=media&token=5feb50cb-dd67-44f2-9f6f-ecf3f32c5b5d'
             : imageUrl,
         role,
         gender,

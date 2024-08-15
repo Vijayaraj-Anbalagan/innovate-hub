@@ -25,7 +25,7 @@ const AdminNavbar: React.FC = () => {
         <div className="flex items-center space-x-4">
           <button onClick={() => router.push('/inthadminpanel24atdb')} className="hover:text-orange-500">Innothon 24</button>
           <button onClick={() => router.push('/admin/users')} className="hover:text-orange-500">Users</button>
-          <button onClick={() => router.push('/admin/problems')} className="hover:text-orange-500">Problem Statements</button>
+          <button onClick={() => router.push('/admin/problems/view')} className="hover:text-orange-500">Problem Statements</button>
           <button onClick={() => setShowLogoutConfirm(true)} className="hover:text-orange-500">Logout</button>
         </div>
       </div>

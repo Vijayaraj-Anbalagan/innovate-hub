@@ -1,11 +1,18 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, doc, getDoc, deleteDoc } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  deleteDoc,
+} from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import AdminNavbar from '@/components/AdminNavbar';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import withRoleBasedAccess from '@/components/withRoleBasedAccess';
 
 interface User {
   id: string;
@@ -16,7 +23,7 @@ interface User {
   teamCount: string;
   problemStatementId: string;
   role: string;
-  imageUrl?: string
+  imageUrl?: string;
 }
 
 const AdminUsers: React.FC = () => {
@@ -33,7 +40,10 @@ const AdminUsers: React.FC = () => {
       for (let i = 1; i <= 10; i++) {
         const collectionName = `part${i}`;
         const querySnapshot = await getDocs(collection(db, collectionName));
-        const usersList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as User[];
+        const usersList = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as User[];
         allUsers = [...allUsers, ...usersList];
       }
       setUsers(allUsers);
@@ -48,13 +58,15 @@ const AdminUsers: React.FC = () => {
       setFilteredUsers(users);
     } else {
       const partNumber = filter.split('-')[1];
-      setFilteredUsers(users.filter(user => user.problemStatementId === partNumber));
+      setFilteredUsers(
+        users.filter((user) => user.problemStatementId === partNumber)
+      );
     }
   }, [filter, users]);
 
   const handleViewUser = async (id: string) => {
     // Find user from users array based on ID
-    const user = users.find(user => user.id === id);
+    const user = users.find((user) => user.id === id);
     if (user) {
       setSelectedUser(user);
     }
@@ -68,7 +80,7 @@ const AdminUsers: React.FC = () => {
   const confirmDeleteUser = async () => {
     if (userToDelete) {
       await deleteDoc(doc(db, 'users', userToDelete.id));
-      setUsers(users.filter(user => user.id !== userToDelete.id));
+      setUsers(users.filter((user) => user.id !== userToDelete.id));
       toast.success(`${userToDelete.name} has been deleted.`);
       setShowDeleteConfirmation(false);
       setUserToDelete(null);
@@ -86,10 +98,26 @@ const AdminUsers: React.FC = () => {
       <div className="min-h-screen flex flex-col p-12 mt-8 text-white">
         <h1 className="text-3xl font-bold mb-6">Manage Users</h1>
         <div className="flex space-x-2 mb-6">
-          {['All', 'PS-1', 'PS-2', 'PS-3', 'PS-4', 'PS-5', 'PS-6', 'PS-7', 'PS-8', 'PS-9', 'PS-10'].map(tab => (
+          {[
+            'All',
+            'PS-1',
+            'PS-2',
+            'PS-3',
+            'PS-4',
+            'PS-5',
+            'PS-6',
+            'PS-7',
+            'PS-8',
+            'PS-9',
+            'PS-10',
+          ].map((tab) => (
             <button
               key={tab}
-              className={`px-4 py-2 rounded-lg ${filter === tab ? 'bg-orange-500 text-white' : 'bg-white text-black'}`}
+              className={`px-4 py-2 rounded-lg ${
+                filter === tab
+                  ? 'bg-orange-500 text-white'
+                  : 'bg-white text-black'
+              }`}
               onClick={() => setFilter(tab)}
             >
               {tab}
@@ -137,15 +165,33 @@ const AdminUsers: React.FC = () => {
               <div className="text-black">
                 <h2 className="text-xl font-semibold mb-4">Profile</h2>
                 {selectedUser.imageUrl && (
-                  <img src={selectedUser.imageUrl} alt="Profile" className="mb-4 w-24 h-24 rounded-full mx-auto" />
+                  <img
+                    src={selectedUser.imageUrl}
+                    alt="Profile"
+                    className="mb-4 w-24 h-24 rounded-full mx-auto"
+                  />
                 )}
-                <p><strong>Name:</strong> {selectedUser.name}</p>
-                <p><strong>Phone:</strong> {selectedUser.phone}</p>
-                <p><strong>Email:</strong> {selectedUser.email}</p>
-                <p><strong>Team Name:</strong> {selectedUser.teamName}</p>
-                <p><strong>Team Members:</strong> {selectedUser.teamCount}</p>
-                <p><strong>Role:</strong> {selectedUser.role}</p>
-                <p><strong>PS ID:</strong> {selectedUser.problemStatementId}</p>
+                <p>
+                  <strong>Name:</strong> {selectedUser.name}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {selectedUser.phone}
+                </p>
+                <p>
+                  <strong>Email:</strong> {selectedUser.email}
+                </p>
+                <p>
+                  <strong>Team Name:</strong> {selectedUser.teamName}
+                </p>
+                <p>
+                  <strong>Team Members:</strong> {selectedUser.teamCount}
+                </p>
+                <p>
+                  <strong>Role:</strong> {selectedUser.role}
+                </p>
+                <p>
+                  <strong>PS ID:</strong> {selectedUser.problemStatementId}
+                </p>
               </div>
             )}
           </div>
@@ -156,16 +202,36 @@ const AdminUsers: React.FC = () => {
               <h2 className="text-xl font-semibold mb-4">Confirm Deletion</h2>
               <p>Are you sure you want to delete {userToDelete?.name}?</p>
               <div className="flex justify-end mt-4">
-                <button className="bg-gray-500 text-white px-4 py-2 rounded mr-2" onClick={cancelDeleteUser}>Cancel</button>
-                <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={confirmDeleteUser}>Delete</button>
+                <button
+                  className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+                  onClick={cancelDeleteUser}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded"
+                  onClick={confirmDeleteUser}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </div>
         )}
       </div>
-      <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 };
 
-export default AdminUsers;
+export default withRoleBasedAccess(AdminUsers, 'admin');

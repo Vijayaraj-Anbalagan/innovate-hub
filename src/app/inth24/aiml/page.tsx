@@ -24,7 +24,7 @@ const AimlPage: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6">
           {aimlStatements.map((problem) => (
             <Link
-              href={'/register'}
+              href={`/register?ps=${problem.psid}`}
               key={problem.id}
               className="border border-white p-5 rounded-lg shadow-lg hover:shadow-xl duration-300 flex flex-col justify-between hover:scale-105 transition-all"
             >

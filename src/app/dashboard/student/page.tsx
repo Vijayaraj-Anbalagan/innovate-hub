@@ -253,7 +253,7 @@ const StudentDashboard: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col mb-3 ml-4 w-1/2">
+                <div className="flex flex-col mb-3 ml-4 w-1/2 text-red-500">
                   <p className="text-md font-semibold mb-2">
                     <i className="fas fa-receipt mr-2"></i>Please Mention
                     Remarks as:

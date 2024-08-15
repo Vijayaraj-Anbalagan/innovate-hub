@@ -7,6 +7,7 @@ import AdminNavbar from '@/components/AdminNavbar';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Image from 'next/image';
+import withRoleBasedAccess from '@/components/withRoleBasedAccess';
 
 interface ProblemStatement {
   id: string;
@@ -151,4 +152,4 @@ const AdminProblems: React.FC = () => {
   );
 };
 
-export default AdminProblems;
+export default withRoleBasedAccess(AdminProblems, 'admin');
