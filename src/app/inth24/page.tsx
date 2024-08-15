@@ -3,7 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
-import { FiCpu, FiShield, FiActivity, FiBox, FiUserCheck, FiClipboard, FiPhoneCall, FiCheckCircle } from 'react-icons/fi';
+import {  FiUserCheck, FiClipboard, FiPhoneCall, FiCheckCircle } from 'react-icons/fi';
 import { MdOutlineWeb } from 'react-icons/md';
 import { FaVrCardboard } from 'react-icons/fa';
 import { BiBrain } from 'react-icons/bi';
@@ -11,6 +11,7 @@ import { BsClockFill, BsCurrencyRupee, BsPeopleFill, BsShieldLock } from 'react-
 import { FaLightbulb, FaChartLine, FaTools, FaCheck, FaLeaf } from 'react-icons/fa';
 import Timeline from '@/components/Timeline';
 import { AiOutlineFileDone } from 'react-icons/ai';
+import { GoCheckCircle } from "react-icons/go";
 
 
 const categories = [
@@ -57,7 +58,7 @@ const evaluationCriteria = [
   { icon: <FaLeaf className="text-white text-2xl" />, title: 'Sustainability' },
   { icon: <FiClipboard className="text-white text-2xl" />, title: 'Relevancy' },
   { icon: <FaChartLine className="text-white text-2xl" />, title: 'Innovation' },
-  { icons: <FiCheckCircle className="text-white text-2xl" />, title: 'Completeness' },
+  { icon: <GoCheckCircle className="text-white text-2xl" />, title: 'Completeness' },
 ];
 
 const Innothon24Page = () => {
