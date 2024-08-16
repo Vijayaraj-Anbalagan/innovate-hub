@@ -190,8 +190,6 @@ const UserManagement: React.FC = () => {
     return isCategoryMatch && isSubcategoryMatch;
   });
 
-  console.log('Team', teamDetails);
-  console.log('first', filteredStudents);
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Manage Users</h2>

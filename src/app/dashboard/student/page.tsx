@@ -31,11 +31,10 @@ const StudentDashboard: React.FC = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        console.log('User', user);
+
         const userId = user.uid;
         const userDocRef = doc(db, 'users', userId);
         const userDoc = await getDoc(userDocRef);
-        console.log('UserDoc', userDoc);
         if (userDoc.exists()) {
           const userData = userDoc.data();
           setUsername(userData.name);

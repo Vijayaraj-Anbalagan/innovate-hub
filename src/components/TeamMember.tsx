@@ -55,7 +55,6 @@ const TeamMember: React.FC<TeamMemberProps> = ({ teamInfo, setTeamInfo }) => {
       const userDoc = await getDoc(userDocRef);
       if (userDoc.exists()) {
         const data = userDoc.data() as TeamDetails;
-        console.log(userDoc.data());
         setTeamDetails(data);
       }
     }

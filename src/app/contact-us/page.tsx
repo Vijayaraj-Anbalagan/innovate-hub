@@ -19,7 +19,6 @@ const ContactPage: React.FC = () => {
 
   const onSubmit: SubmitHandler<ContactFormData> = (data) => {
     toast.success("Message sent successfully!");
-    console.log(data);
   };
 
   return (
