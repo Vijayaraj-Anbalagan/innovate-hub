@@ -126,17 +126,18 @@ const AdminUsers: React.FC = () => {
     setUserToDelete(null);
   };
 
-  const getFavoriteProblemStatements = (
-    favoriteProblemStatements: string[]
-  ) => {
-    return favoriteProblemStatements.map((statementId) => {
-      const statement = problemStatements.find(
-        (problem) => problem.id === statementId
-      );
-      return statement
-        ? statement.problemStatement.slice(0, 50) + '...'
-        : statementId;
-    });
+  const determinePaidStatus = (email: string | string[]) => {
+    const domain = (email as string).split('@')[1]; // Get domain part after @
+    const departmentCode = email.slice(4, 7); // Get characters at index 4, 5, 6 for department code
+    const isCseStudent = email[2] === 'c' && email[3] === 's'; // Check if cs is at index 2, 3
+
+    if (
+      domain === 'kcgcollege.com' &&
+      (isCseStudent || departmentCode === '104' || departmentCode === '128')
+    ) {
+      return true;
+    }
+    return null;
   };
 
   const [isVisible, setIsVisible] = useState(false);
@@ -332,10 +333,15 @@ const AdminUsers: React.FC = () => {
                 >
                   {isVisible ? 'Hide Payment Photo' : 'View Payment Photo'}
                 </button>
-
-                {isVisible && !selectedUser.paymentScreenshot && (
-                  <h1>KCG CSE/CS Student[No payment required]</h1>
-                )}
+                {isVisible &&
+                  determinePaidStatus(selectedUser.email) === true && (
+                    <h1>KCG CSE/CS Student[No payment required]</h1>
+                  )}
+                {isVisible &&
+                  determinePaidStatus(selectedUser.email) === null &&
+                  selectedUser.paymentScreenshot === undefined && (
+                    <h1 className='text-red-500'>Payment yet to be Done</h1>
+                  )}
               </div>
               <div className="w-full flex justify-around mt-2">
                 <button
