@@ -285,6 +285,11 @@ const UserManagement: React.FC = () => {
                                 Team Size :{' '}
                                 {teamDetails[student.id]?.leadDetails.teamCount}
                               </p>
+                              {student.os && (
+                                <p className="font-semibold">
+                                  Open Statement :{' '} {student.os}
+                                </p>
+                              )}
                               <h5 className="font-semibold">Team Lead :</h5>
                               <p>{`${
                                 teamDetails[student.id]?.leadDetails.lead.name
@@ -294,7 +299,9 @@ const UserManagement: React.FC = () => {
                                 teamDetails[student.id]?.leadDetails.lead.phone
                               }`}</p>
                               <div className="mt-2">
-                                <h5 className="font-semibold">Team Members :</h5>
+                                <h5 className="font-semibold">
+                                  Team Members :
+                                </h5>
                                 <ul className="list-disc ml-5">
                                   {teamDetails[student.id]?.teamMembers.map(
                                     (member, idx) => (
