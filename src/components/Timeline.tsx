@@ -46,7 +46,7 @@ const Timeline = () => {
             <time className="tl-time text-sm text-gray-500">20th - 21st Sep 2024</time>
           </div>
           <div className="tl-body">
-            <p>PPT Presentation and Prototype 100%.<br/> Mode: Offline.
+            <p>PPT Presentation and Buisness Model<br/> Prototype 100%.<br/> Mode: Offline.
             </p>
             
           </div>
