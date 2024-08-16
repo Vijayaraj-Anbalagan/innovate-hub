@@ -22,7 +22,7 @@ const OpenStatement = () => {
     localStorage.setItem('openStatementData', JSON.stringify(openStatementData));
 
     // Redirect to registration page
-    router.push('/register');
+    router.push('/register?ps=PS-OPEN');
   };
 
   return (

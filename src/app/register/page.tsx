@@ -13,6 +13,7 @@ import { auth, db, storage } from '@/lib/firebase';
 import { Statements } from '@/lib/allps';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
+import { set } from 'react-hook-form';
 
 const states = [
   'Andhra Pradesh',
@@ -140,8 +141,26 @@ const Register: React.FC = () => {
   const handlePsidChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedPsid = event.target.value;
     setPsid(selectedPsid);
-    const statement = Statements.find((s) => s.psid === selectedPsid);
-    setPsTitle(statement ? statement.title || '' : '');
+
+    if (selectedPsid === 'PS-OPEN') {
+      const openStatementData = localStorage.getItem('openStatementData');
+      if (!openStatementData) {
+        router.push('/inth24/open');
+        return;
+      }
+      
+      const { problemStatement, category } = JSON.parse(openStatementData);
+      setOs( 
+        problemStatement && category
+          ? `${problemStatement} : ${category.toUpperCase()}`
+          : null
+      );
+      setPsTitle('Open Problem Statement');
+    } else {
+      const statement = Statements.find((s) => s.psid === selectedPsid);
+      setPsTitle(statement ? statement.title || '' : '');
+      setOs(null);
+    }
   };
 
   useEffect(() => {
@@ -573,6 +592,9 @@ const Register: React.FC = () => {
               </select>
               {psTitle && (
                 <p className="text-sm text-orange-500 mt-2">{psTitle}</p>
+              )}
+              {os && (
+                <p className="text-sm text-orange-500 mt-2">{osProblemStatement}</p>
               )}
             </div>
             <div className="mb-4">
