@@ -599,12 +599,12 @@ const Register: React.FC = () => {
                   </option>
                 ))}
               </select>
-              {psTitle && (
+              {psid !== 'PS-OPEN' && psTitle && (
                 <p className="text-sm text-orange-500 mt-2">{psTitle}</p>
               )}
-              {os && (
-                <div className="flex flex-col mt-2">
-                <p className="text-sm text-orange-500 mt-2">{osProblemStatement}</p>
+              {psid === 'PS-OPEN' && os && (
+              <div className="flex flex-col mt-2">
+                <p className="text-sm text-orange-500">{osProblemStatement}</p>
                 <button
                   type="button"
                   onClick={handleChangeOpenStatement}
@@ -613,7 +613,7 @@ const Register: React.FC = () => {
                   Change Open Statement
                 </button>
               </div>
-              )}
+            )}
             </div>
             <div className="mb-4">
               <label
