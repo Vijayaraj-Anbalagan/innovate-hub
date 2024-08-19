@@ -12,6 +12,8 @@ import { FaLightbulb, FaChartLine, FaTools, FaCheck, FaLeaf } from 'react-icons/
 import Timeline from '@/components/Timeline';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { GoCheckCircle } from "react-icons/go";
+import { BiAnalyse } from "react-icons/bi";
+
 
 
 const categories = [
@@ -59,6 +61,7 @@ const evaluationCriteria = [
   { icon: <FiClipboard className="text-white text-2xl" />, title: 'Relevancy' },
   { icon: <FaChartLine className="text-white text-2xl" />, title: 'Innovation' },
   { icon: <GoCheckCircle className="text-white text-2xl" />, title: 'Completeness' },
+  { icon: <BiAnalyse className="text-white text-2xl" />, title: 'Business Model' },
 ];
 
 const Innothon24Page = () => {

@@ -100,6 +100,15 @@ const Register: React.FC = () => {
     }
   }, []);
 
+
+  const handleChangeOpenStatement = () => {
+    // Clear the open statement data from localStorage
+    localStorage.removeItem('openStatementData');
+  
+    // Redirect the user to the Open Statement submission page
+    router.push('/inth24/open');
+  };
+
   useEffect(() => {
     const id = searchParams.get('ps');
     if (id) {
@@ -590,12 +599,21 @@ const Register: React.FC = () => {
                   </option>
                 ))}
               </select>
-              {psTitle && (
+              {psid !== 'PS-OPEN' && psTitle && (
                 <p className="text-sm text-orange-500 mt-2">{psTitle}</p>
               )}
-              {os && (
-                <p className="text-sm text-orange-500 mt-2">{osProblemStatement}</p>
-              )}
+              {psid === 'PS-OPEN' && os && (
+              <div className="flex flex-col mt-2">
+                <p className="text-sm text-orange-500">{osProblemStatement}</p>
+                <button
+                  type="button"
+                  onClick={handleChangeOpenStatement}
+                  className="text-blue-500 underline mt-2 hover:text-blue-700"
+                >
+                  Change Open Statement
+                </button>
+              </div>
+            )}
             </div>
             <div className="mb-4">
               <label
