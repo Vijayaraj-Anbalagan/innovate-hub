@@ -211,7 +211,6 @@ const StudentDashboard: React.FC = () => {
                 Please complete your registration by making the payment to
                 access the full dashboard.
               </p>
-
               <div className="mb-2">
                 <p className="text-md font-semibold mb-2">
                   <i className="fas fa-university mr-2"></i> Bank Details:

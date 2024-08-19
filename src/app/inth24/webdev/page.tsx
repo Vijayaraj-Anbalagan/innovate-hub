@@ -14,7 +14,7 @@ const WebDevPage: React.FC = () => {
       <IndustryStatementsLink />
       <div className="min-h-screen p-6 sm:p-12 text-white mt-14">
         <h1 className="text-4xl font-bold text-center text-orange-500 mb-8">
-          Web Development Problem Statements
+          Web/App Development Problem Statements
         </h1>
         <p className="text-lg text-center max-w-4xl mb-8 mx-auto">
           Dive into the exciting problem statements in Web and App Development

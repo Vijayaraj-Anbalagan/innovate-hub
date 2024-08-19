@@ -56,7 +56,8 @@ const OpenStatement = () => {
             <option value="aiml">AI/ML</option>
             <option value="cybersecurity">Cyber Security</option>
             <option value="arvr">AR/VR</option>
-            <option value="webdev">App Development</option>
+            <option value="appdev">App Development</option>
+            <option value="webdev">Web Development</option>
             <option value="others">Others</option>
           </select>
         </div>

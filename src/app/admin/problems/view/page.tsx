@@ -285,7 +285,7 @@ const UserManagement: React.FC = () => {
                               </p>
                               {student.os && (
                                 <p className="font-semibold">
-                                  Open Statement :{' '} {student.os}
+                                  Open Statement : {student.os}
                                 </p>
                               )}
                               <h5 className="font-semibold">Team Lead :</h5>
