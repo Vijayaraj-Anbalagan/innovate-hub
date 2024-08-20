@@ -156,7 +156,7 @@ const AdminUsers: React.FC = () => {
     }
   };
   return (
-    <main className="relative max-w-screen">
+    <main className="relative max-w-screen min-h-screen">
       <AdminNavbar />
       <div className="min-h-screen bg-gray-100 mt-16 py-6 px-6 flex max-w-screen justify-between relative">
         <div className="  flex flex-col w-[73%]">
@@ -227,12 +227,12 @@ const AdminUsers: React.FC = () => {
                         >
                           View
                         </button>
-                        <button
+                        {/* <button
                           className="bg-red-500 text-white px-3 py-1 rounded"
                           onClick={() => handleDeleteUser(user)}
                         >
                           Delete
-                        </button>
+                        </button> */}
                       </td>
                     </tr>
                   ))}
@@ -340,7 +340,7 @@ const AdminUsers: React.FC = () => {
                 {isVisible &&
                   determinePaidStatus(selectedUser.email) === null &&
                   selectedUser.paymentScreenshot === undefined && (
-                    <h1 className='text-red-500'>Payment yet to be Done</h1>
+                    <h1 className="text-red-500">Payment yet to be Done</h1>
                   )}
               </div>
               <div className="w-full flex justify-around mt-2">
@@ -373,7 +373,7 @@ const AdminUsers: React.FC = () => {
         pauseOnHover
       />
       {isVisible && selectedUser?.paymentScreenshot && (
-        <div className="w-full min-h-screen bg-black/60 absolute top-0 flex justify-center">
+        <div className="w-full h-full bg-black/60 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center">
           <button
             onClick={() => setIsVisible(false)}
             className="absolute top-10 right-40 bg-white rounded-full z-40"
@@ -391,7 +391,7 @@ const AdminUsers: React.FC = () => {
           <img
             src={selectedUser?.paymentScreenshot} // Replace with your photo URL
             alt="Payment Photo"
-            style={{ marginTop: '10px', maxWidth: '90%', maxHeight: '90%' }}
+            style={{ marginTop: '10px' }}
           />
         </div>
       )}
