@@ -14,6 +14,8 @@ import { Statements } from '@/lib/allps';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { set } from 'react-hook-form';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const states = [
   'Andhra Pradesh',
@@ -100,11 +102,10 @@ const Register: React.FC = () => {
     }
   }, []);
 
-
   const handleChangeOpenStatement = () => {
     // Clear the open statement data from localStorage
     localStorage.removeItem('openStatementData');
-  
+
     // Redirect the user to the Open Statement submission page
     router.push('/inth24/open');
   };
@@ -114,7 +115,7 @@ const Register: React.FC = () => {
     if (id) {
       setPsid(id as string);
       const statementTitle = Statements.find((s) => s.psid === id)?.title;
-      setPsTitle(statementTitle as string || '');
+      setPsTitle((statementTitle as string) || '');
     }
   }, []);
 
@@ -156,9 +157,9 @@ const Register: React.FC = () => {
         router.push('/inth24/open');
         return;
       }
-      
+
       const { problemStatement, category } = JSON.parse(openStatementData);
-      setOs( 
+      setOs(
         problemStatement && category
           ? `${problemStatement} : ${category.toUpperCase()}`
           : null
@@ -198,10 +199,16 @@ const Register: React.FC = () => {
 
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
+      toast.error('Passwords do not match.');
+      setShowConfirmation(false);
+      setIsLoading(false);
       return;
     }
     if (role !== 'student' && !validSecretKeys.includes(secretKey)) {
       setError('Invalid secret key.');
+      toast.error('Invalid secret key.');
+      setShowConfirmation(false);
+      setIsLoading(false);
       return;
     }
     setError(''); // Clear previous errors
@@ -258,7 +265,6 @@ const Register: React.FC = () => {
         teamInfo,
       };
 
-
       await setDoc(doc(db, 'users', user.uid), userDetails);
 
       const teamDetails = {
@@ -314,6 +320,9 @@ const Register: React.FC = () => {
       setIsLoading(false);
     } catch (error: any) {
       console.error('Registration error:', error.message);
+      toast.error(`Registration error: ${error.message}`);
+      setShowConfirmation(false);
+      setIsLoading(false);
       setError(error.message);
     }
   };
@@ -326,6 +335,7 @@ const Register: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
+      <ToastContainer />
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -604,17 +614,19 @@ const Register: React.FC = () => {
                 <p className="text-sm text-orange-500 mt-2">{psTitle}</p>
               )}
               {psid === 'PS-OPEN' && os && (
-              <div className="flex flex-col mt-2">
-                <p className="text-sm text-orange-500">{osProblemStatement}</p>
-                <button
-                  type="button"
-                  onClick={handleChangeOpenStatement}
-                  className="text-blue-500 underline mt-2 hover:text-blue-700"
-                >
-                  Change Open Statement
-                </button>
-              </div>
-            )}
+                <div className="flex flex-col mt-2">
+                  <p className="text-sm text-orange-500">
+                    {osProblemStatement}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleChangeOpenStatement}
+                    className="text-blue-500 underline mt-2 hover:text-blue-700"
+                  >
+                    Change Open Statement
+                  </button>
+                </div>
+              )}
             </div>
             <div className="mb-4">
               <label
@@ -821,7 +833,7 @@ const Register: React.FC = () => {
 export default function Page() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Register/>
+      <Register />
     </Suspense>
   );
 }
