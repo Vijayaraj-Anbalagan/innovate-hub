@@ -113,9 +113,8 @@ const Register: React.FC = () => {
     const id = searchParams.get('ps');
     if (id) {
       setPsid(id as string);
-
       const statementTitle = Statements.find((s) => s.psid === id)?.title;
-      setPsTitle(statementTitle as string);
+      setPsTitle(statementTitle as string || '');
     }
   }, []);
 
@@ -258,6 +257,8 @@ const Register: React.FC = () => {
         paid,
         teamInfo,
       };
+
+
       await setDoc(doc(db, 'users', user.uid), userDetails);
 
       const teamDetails = {
