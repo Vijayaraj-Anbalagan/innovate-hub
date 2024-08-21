@@ -31,7 +31,6 @@ const StudentDashboard: React.FC = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-
         const userId = user.uid;
         const userDocRef = doc(db, 'users', userId);
         const userDoc = await getDoc(userDocRef);
@@ -111,7 +110,7 @@ const StudentDashboard: React.FC = () => {
     }
   };
 
-  const totalAmount = teamCount * 100;
+  const totalAmount = teamCount * 50;
 
   const whatsappGroupLink = 'https://chat.whatsapp.com/FKfKxVogKX0LZurACGkpUY';
 
@@ -243,10 +242,11 @@ const StudentDashboard: React.FC = () => {
                       <strong>Team Count:</strong> {teamCount}
                     </p>
                     <p>
-                      <strong>Registration Fee:</strong> ₹100 per member
+                      <strong>Registration Fee:</strong>{' '}
+                      <span className="line-through"> ₹100 </span> Early bird Offer : ₹50 per member
                     </p>
                     <p>
-                      <strong>Total Amount:</strong> ₹{teamCount} X ₹100 ={' '}
+                      <strong>Total Amount:</strong> ₹{teamCount} X ₹50 ={' '}
                       <span className="text-lg font-bold">₹{totalAmount}</span>
                     </p>
                   </div>
