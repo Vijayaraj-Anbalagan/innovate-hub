@@ -274,7 +274,11 @@ const AdminUsers: React.FC = () => {
                         >
                           Delete
                         </button> */}
-                        <div className={`w-[140px] ${user.mentorName && 'overflow-x-scroll'} no-scrollbar`}>
+                        <div
+                          className={`w-[140px] ${
+                            user.mentorName && 'overflow-x-scroll'
+                          } no-scrollbar`}
+                        >
                           {user.mentorName ? (
                             user.mentorName
                           ) : (
@@ -422,7 +426,7 @@ const AdminUsers: React.FC = () => {
                     htmlFor="name"
                     className="block text-gray-700 text-sm font-bold mb-2"
                   >
-                    Mentor's Name
+                    {`Mentor's Name `}
                   </label>
                   <input
                     type="text"

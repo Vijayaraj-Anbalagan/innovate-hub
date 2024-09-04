@@ -16,12 +16,6 @@ const MentorSupport: React.FC<MentorSupportProps> = ({
   url,
   mentorDetails,
 }) => {
-  const handleClick = () => {
-    if (mode === 'opened' && url) {
-      window.location.href = url;
-    }
-  };
-
   const [showPopup, setShowPopup] = useState(false);
 
   const handleButtonClick = () => {
@@ -64,12 +58,20 @@ const MentorSupport: React.FC<MentorSupportProps> = ({
               <p className="text-lg font-semibold">Mentor Details : </p>
             </div>
             <p>{`Mentor Name : ${mentorDetails?.mentorName} `}</p>
-            <p>{`Mentor Phone : ${mentorDetails?.mentorPhone}`}</p>
+            <p>Mentor Phone :</p>
+            <a
+              href={`tel:${mentorDetails?.mentorPhone}`}
+              className="text-blue-600 underline hover:text-blue-400"
+            >
+              {mentorDetails?.mentorPhone}
+            </a>
             <p>Mentor LinkedIn :</p>
             <a
               href={mentorDetails?.mentorLinkedIn || ''}
               className="text-blue-600 underline hover:text-blue-400"
-            >{mentorDetails?.mentorLinkedIn}</a>
+            >
+              {mentorDetails?.mentorLinkedIn}
+            </a>
           </div>
         </div>
       )}
