@@ -14,6 +14,11 @@ import NotificationButton from '@/components/NotificationButton';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import TeamMember from '@/components/TeamMember';
 
+export interface MentorDetails {
+  mentorName: string | null;
+  mentorPhone: string | null;
+  mentorLinkedIn: string | null;
+}
 const StudentDashboard: React.FC = () => {
   const [username, setUsername] = useState<string>('');
   const [greeting, setGreeting] = useState<string>('');
@@ -27,6 +32,11 @@ const StudentDashboard: React.FC = () => {
   const [uploaded, setUploaded] = useState<boolean>(false);
   const router = useRouter();
   const [teamInfo, setTeamInfo] = useState<boolean | null>(null);
+  const [mentorDetails, setMentorDetails] = useState<MentorDetails>({
+    mentorName: null,
+    mentorPhone: null,
+    mentorLinkedIn: null,
+  });
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -40,6 +50,12 @@ const StudentDashboard: React.FC = () => {
           setStudentPsid(userData.psid);
           setPaid(userData.paid);
           setTeamCount(userData.teamCount || 1);
+
+          setMentorDetails({
+            mentorName: userData.mentorName || null,
+            mentorPhone: userData.phone || null,
+            mentorLinkedIn: userData.mentorLinkedIn || null,
+          });
           if (userData.teamCount === 1) {
             setTeamInfo(true);
           } else {
@@ -113,6 +129,13 @@ const StudentDashboard: React.FC = () => {
   const totalAmount = teamCount * 50;
 
   const whatsappGroupLink = 'https://chat.whatsapp.com/FKfKxVogKX0LZurACGkpUY';
+
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = '/INNOTHON_PPT_TEMPLATE.pptx';
+    link.download = 'INNOTHON_PPT_TEMPLATE.pptx';
+    link.click();
+  };
 
   return (
     <>
@@ -194,10 +217,24 @@ const StudentDashboard: React.FC = () => {
               ))
             )}
           </div>
-          <div className="mt-8 flex space-x-4">
-            <MentorSupport mode="locked" value="Mentor" />
-            <NotificationButton alert />
-            <WhatsAppButton link={whatsappGroupLink} />
+          <div className="flex flex-col items-center">
+            <div className="mt-8 flex space-x-4">
+              <MentorSupport
+                mode={mentorDetails.mentorName ? 'opened' : 'locked'}
+                value="Mentor"
+                url={mentorDetails?.mentorLinkedIn || undefined}
+                mentorDetails={mentorDetails.mentorName ? mentorDetails : null}
+              />
+              <NotificationButton alert />
+              <WhatsAppButton link={whatsappGroupLink} />
+            </div>
+
+            <button
+              className="mt-4 border-orange-500 border-2 py-2 px-8 rounded-md text-orange-500 hover:bg-orange-500 hover:text-white transition-all duration-300"
+              onClick={handleDownload}
+            >
+              Download PPT Template
+            </button>
           </div>
         </div>
         {paid === null && (
@@ -243,7 +280,8 @@ const StudentDashboard: React.FC = () => {
                     </p>
                     <p>
                       <strong>Registration Fee:</strong>{' '}
-                      <span className="line-through"> ₹100 </span> Early bird Offer : ₹50 per member
+                      <span className="line-through"> ₹100 </span> Early bird
+                      Offer : ₹50 per member
                     </p>
                     <p>
                       <strong>Total Amount:</strong> ₹{teamCount} X ₹50 ={' '}
