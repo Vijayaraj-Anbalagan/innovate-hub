@@ -53,7 +53,7 @@ const StudentDashboard: React.FC = () => {
 
           setMentorDetails({
             mentorName: userData.mentorName || null,
-            mentorPhone: userData.phone || null,
+            mentorPhone: userData.mentorPhone || null,
             mentorLinkedIn: userData.mentorLinkedIn || null,
           });
           if (userData.teamCount === 1) {
