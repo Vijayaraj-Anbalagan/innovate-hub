@@ -49,6 +49,7 @@ async function exportExternalParticipantsToExcel() {
     { header: 'State', key: 'state', width: 20 },
     { header: 'Team Count', key: 'teamCount', width: 15 },
     { header: 'Team Members', key: 'teamMembers', width: 100 },
+    {header : 'Payment SS' , key : 'paymentSS' , width : 20}
   ];
 
   // Filter documents and select specific fields
@@ -68,7 +69,10 @@ async function exportExternalParticipantsToExcel() {
         psTitle: data.psTitle || '',
         state: data.state || '',
         teamCount: data.teamCount,
-        teamMembers: (data.teamMembers || []).map((member) => member.name).join(', '), // Join names as a comma-separated string
+        teamMembers: (data.teamMembers || [])
+          .map((member) => member.name)
+          .join(', '), // Join names as a comma-separated string
+        paymentSS: data.paymentScreenshot || ''
       };
 
       worksheet.addRow(selectedData);
