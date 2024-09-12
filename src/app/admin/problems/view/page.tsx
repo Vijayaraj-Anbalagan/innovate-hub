@@ -98,6 +98,8 @@ const categories = {
     'PS-AR5',
     'PS-AR6',
     'PS-AR7',
+    'PS-AR8',
+    'PS-AR9',
   ],
   OpenStatement: ['All'],
 };
