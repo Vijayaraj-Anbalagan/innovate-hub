@@ -12,7 +12,7 @@ const QRCodeGenerator: React.FC = () => {
       if (user) {
         const userId = user.uid;
         const url = await QRCode.toDataURL(
-          `https://innovatehub.vercel.app/admin/qrscan?id=${userId}`
+          `https://innovatehub.vercel.app/admin/scan?teamId=${userId}`
         );
         console.log('Url', userId);
         setQrCodeUrl(url);
