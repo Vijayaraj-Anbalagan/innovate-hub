@@ -25,7 +25,7 @@ const AdminScanPage: React.FC = () => {
       if (teamDoc.exists()) {
         setTeamDetails(teamDoc.data());
       } else {
-        alert('No team found for this ID');
+        alert('No team found for this ID or team has not registered yet.');
       }
       setLoading(false);
     };
