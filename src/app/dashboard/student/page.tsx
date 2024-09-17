@@ -227,7 +227,7 @@ const StudentDashboard: React.FC = () => {
                 url={mentorDetails?.mentorLinkedIn || undefined}
                 mentorDetails={mentorDetails.mentorName ? mentorDetails : null}
               />
-              <NotificationButton alert />
+              <NotificationButton />
               <WhatsAppButton link={whatsappGroupLink} />
             </div>
             
