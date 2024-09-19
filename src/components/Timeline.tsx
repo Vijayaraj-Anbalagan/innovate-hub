@@ -17,7 +17,7 @@ const Timeline = () => {
           </div>
         </div>
 
-        <div className="tl-content">
+        <div className="tl-content tl-content-active">
           <div className="tl-header">
             <span className="tl-marker"></span>
             <p className="tl-title font-semibold">Registration Ends</p>
@@ -28,7 +28,7 @@ const Timeline = () => {
           </div>
         </div>
 
-        <div className="tl-content">
+        <div className="tl-content tl-content-active">
           <div className="tl-header">
             <span className="tl-marker"></span>
             <p className="tl-title font-semibold">Prelims</p>

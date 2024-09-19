@@ -3,18 +3,19 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
-import {  FiUserCheck, FiClipboard, FiPhoneCall, FiCheckCircle } from 'react-icons/fi';
+import { FiUserCheck, FiClipboard, FiPhoneCall, FiCheckCircle } from 'react-icons/fi';
 import { MdOutlineWeb } from 'react-icons/md';
-import { FaVrCardboard } from 'react-icons/fa';
+import { FaCheckCircle, FaVrCardboard } from 'react-icons/fa';
 import { BiBrain } from 'react-icons/bi';
 import { BsClockFill, BsCurrencyRupee, BsPeopleFill, BsShieldLock } from 'react-icons/bs';
 import { FaLightbulb, FaChartLine, FaTools, FaCheck, FaLeaf } from 'react-icons/fa';
 import Timeline from '@/components/Timeline';
-import { AiOutlineFileDone } from 'react-icons/ai';
+import { AiOutlineFileDone, AiOutlineTrophy } from 'react-icons/ai';
 import { GoCheckCircle } from "react-icons/go";
 import { BiAnalyse } from "react-icons/bi";
-
-
+import { GiLaurelsTrophy } from 'react-icons/gi';
+import { RiAwardFill } from 'react-icons/ri';
+import { FiAward } from 'react-icons/fi';
 
 const categories = [
   {
@@ -64,6 +65,8 @@ const evaluationCriteria = [
   { icon: <BiAnalyse className="text-white text-2xl" />, title: 'Business Model' },
 ];
 
+
+
 const Innothon24Page = () => {
   const router = useRouter();
 
@@ -74,7 +77,7 @@ const Innothon24Page = () => {
   return (
     <>
       <Navbar showBackButton backButtonRoute="/dashboard" />
-      <div className="min-h-screen p-8 sm:p-12  text-white mt-14">
+      <div className="min-h-screen p-8 sm:p-12 text-white mt-14">
         <h1 className="text-4xl font-bold text-center text-orange-500 mb-8">
           INNOTHON 24 Problem Statements from the Industry
         </h1>
@@ -101,14 +104,14 @@ const Innothon24Page = () => {
           <h2 className="text-3xl font-bold text-center mb-6">
             Evaluation Criteria
           </h2>
-          <div className="flex flex-wrap justify-center items-center gap-4 ">
+          <div className="flex flex-wrap justify-center items-center gap-4">
             {evaluationCriteria.map((criteria, index) => (
               <div
                 key={index}
                 className="flex flex-col items-center border-2 border-white text-white py-3 px-5 rounded-full hover:bg-orange-600 transition duration-300 ease-in-out cursor-default min-w-[130px]"
               >
                 {criteria.icon}
-                <span className="mt-2 text-sm text-center ">
+                <span className="mt-2 text-sm text-center">
                   {criteria.title}
                 </span>
               </div>
@@ -117,6 +120,57 @@ const Innothon24Page = () => {
           <h2 className="text-3xl font-bold text-center mt-8">Timeline</h2>
           <Timeline />
         </div>
+
+        {/* Announcement of the Awards Section */}
+<div className="mb-12">
+  <h2 className="text-4xl font-bold text-center text-yellow-500 mb-8">Announcement of the Awards</h2>
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {/* Overall Title Winner */}
+    <div className="bg-transparent border border-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center transform hover:scale-105 transition duration-300 ease-in-out">
+      <AiOutlineTrophy className="text-yellow-500 text-6xl mb-4" />
+      <h3 className="text-2xl font-bold text-yellow-500 mb-2">Overall Title Winner</h3>
+      <p className="text-white">Awarded to the team with the most outstanding performance across all categories.</p>
+    </div>
+
+    {/* Domain-Wise Title Winner */}
+    <div className="bg-transparent border border-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center transform hover:scale-105 transition duration-300 ease-in-out">
+      <GiLaurelsTrophy className="text-yellow-500 text-6xl mb-4" />
+      <h3 className="text-2xl font-bold text-yellow-500 mb-2">Domain-Wise Title Winner</h3>
+      <p className="text-white">Recognizes the best team in each specific domain such as AI/ML, Cybersecurity, AR/VR, etc.</p>
+    </div>
+
+    {/* Best UI/UX */}
+    <div className="bg-transparent border border-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center transform hover:scale-105 transition duration-300 ease-in-out">
+      <RiAwardFill className="text-yellow-500 text-6xl mb-4" />
+      <h3 className="text-2xl font-bold text-yellow-500 mb-2">Best UI/UX</h3>
+      <p className="text-white">Awarded to the team with the most user-friendly and aesthetically pleasing interface design.</p>
+    </div>
+
+    {/* Best Clean Code */}
+    <div className="bg-transparent border border-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center transform hover:scale-105 transition duration-300 ease-in-out">
+      <FaTools className="text-yellow-500 text-6xl mb-4" />
+      <h3 className="text-2xl font-bold text-yellow-500 mb-2">Best Clean Code</h3>
+      <p className="text-white">Honors the team with the best coding practices, maintainable, and well-documented code.</p>
+    </div>
+
+    {/* Special Jury Prizes */}
+    <div className="bg-transparent border border-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center transform hover:scale-105 transition duration-300 ease-in-out">
+      <FiAward className="text-yellow-500 text-6xl mb-4" />
+      <h3 className="text-2xl font-bold text-yellow-500 mb-2">Special Jury Prizes</h3>
+      <p className="text-white">Each jury member can recommend a special prize to the team they find the most innovative or impactful.</p>
+    </div>
+
+    {/* More Exciting Gifts and Goodies */}
+    <div className="bg-transparent border border-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center transform hover:scale-105 transition duration-300 ease-in-out">
+      <FaLeaf className="text-yellow-500 text-6xl mb-4" />
+      <h3 className="text-2xl font-bold text-yellow-500 mb-2">More Exciting Gifts and Goodies</h3>
+      <p className="text-white">Get ready for more fun, learning opportunities, and exciting goodies for participants!</p>
+    </div>
+  </div>
+</div>
+
+  
+
 
         <h2
           id="industry-statements"
