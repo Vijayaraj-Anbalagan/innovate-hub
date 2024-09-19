@@ -136,7 +136,7 @@ const Innothon24Page = () => {
     <div className="bg-transparent border border-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center transform hover:scale-105 transition duration-300 ease-in-out">
       <GiLaurelsTrophy className="text-yellow-500 text-6xl mb-4" />
       <h3 className="text-2xl font-bold text-yellow-500 mb-2">Domain-Wise Title Winner</h3>
-      <p className="text-white">Recognizes the best team in each specific domain such as AI/ML, Cybersecurity, AR/VR, etc</p>
+      <p className="text-white">Recognizes the best team in each specific domain such as AI/ML, Cybersecurity, AR/VR, etc .</p>
     </div>
 
     {/* Best UI/UX */}
