@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import withRoleBasedAccess from '@/components/withRoleBasedAccess';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AdminScanPage: React.FC = () => {
   const [teamDetails, setTeamDetails] = useState<any>(null);
@@ -34,7 +36,7 @@ const AdminScanPage: React.FC = () => {
   }, [searchParams]);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     field: string,
     index?: number
   ) => {
@@ -84,11 +86,11 @@ const AdminScanPage: React.FC = () => {
         attendance: 'present',
       });
 
-      alert('Attendance recorded successfully!');
-      router.push('/admin/users');
+      // Show a success toast message
+      toast.success('Attendance successfully registered!');
     } catch (error) {
       console.error('Error recording attendance:', error);
-      alert('Failed to record attendance. Please try again.');
+      toast.error('Failed to record attendance. Please try again.');
     }
   };
 
@@ -102,7 +104,11 @@ const AdminScanPage: React.FC = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen">
+      <ToastContainer />
       <h2 className="text-2xl font-bold text-gray-800 p-4">Team Details</h2>
+      <h2 className="text-4xl font-bold text-center mb-2">
+        {teamDetails.leadDetails.teamName}
+      </h2>
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h3 className="text-lg font-semibold mb-4">Lead Information</h3>
         <h1 className="font-bold">Name :</h1>
@@ -113,6 +119,18 @@ const AdminScanPage: React.FC = () => {
           placeholder="Lead Name"
           className="mb-4 p-2 border rounded w-full"
         />
+        <h1 className="font-bold">Gender :</h1>
+        <select
+          value={teamDetails.leadDetails?.lead?.gender || ''}
+          onChange={(e) => handleInputChange(e, 'gender')}
+          className="mb-4 p-2 border rounded w-full"
+        >
+          <option value="" disabled>
+            Select Gender
+          </option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
         <h1 className="font-bold">College :</h1>
         <input
           type="text"
@@ -138,12 +156,6 @@ const AdminScanPage: React.FC = () => {
                 <h1 className="font-bold underline">{`Member ${
                   index + 1
                 } :`}</h1>
-                <button
-                  onClick={() => handleRemoveMember(index)}
-                  className="bg-red-500 text-white w-7 h-7 flex justify-center items-center rounded-full"
-                >
-                  -
-                </button>
               </div>
               <h1 className="font-bold">Name :</h1>
               <input
@@ -153,6 +165,18 @@ const AdminScanPage: React.FC = () => {
                 placeholder={`Member ${index + 1} Name`}
                 className="mb-2 p-2 border rounded w-full"
               />
+              <h1 className="font-bold">Gender :</h1>
+              <select
+                value={member?.gender || ''}
+                onChange={(e) => handleInputChange(e, 'gender', index)}
+                className="mb-4 p-2 border rounded w-full"
+              >
+                <option value="" disabled>
+                  Select Gender
+                </option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
               <h1 className="font-bold">College :</h1>
               <input
                 type="text"
